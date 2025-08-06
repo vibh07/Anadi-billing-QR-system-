@@ -182,22 +182,22 @@
 
         /* --- Main Page --- */
         #main-page { display: none; }
-        header {     background-color: #ffffff;
-    color: var(--primary-color);
-    padding: 4rem 2rem;
-    display: flex
-;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 9px 20px 11px 3px rgba(0, 0, 0, 0.08);
-    position: sticky;
-    top: 0;
-    z-index: 100;
- }
+        header {
+            background-color: #ffffff;
+            color: var(--primary-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
         header h2 { font-weight: 600; }
         nav button { background: none; border: 2px solid var(--primary-color); color: var(--primary-color); padding: 0.5rem 1rem; border-radius: var(--border-radius); cursor: pointer; transition: all 0.3s ease; font-weight: 600; }
         nav button.active, nav button:hover { background: var(--primary-color); color: var(--white); }
-         
+        
         .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
         .tab { display: none; }
         .tab.active { display: block; animation: fadeIn 0.5s; }
@@ -211,10 +211,10 @@
         table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
         th, td { padding: 0.8rem; text-align: left; border-bottom: 1px solid #ddd; vertical-align: middle; }
         thead { background-color: #f8f9fa; }
-         
+        
         .action-buttons-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 1.5rem; }
         .action-buttons-container .btn { width: auto; flex-grow: 1; }
-         
+        
         #qr-and-print-section { text-align: center; margin-top: 2rem; padding: 2rem; background: var(--white); border-radius: var(--border-radius); box-shadow: var(--shadow); }
 
         /* --- History Page --- */
@@ -225,13 +225,13 @@
         .bill-card { background: var(--white); border-radius: var(--border-radius); margin-bottom: 1rem; box-shadow: var(--shadow); border-left: 5px solid; transition: all 0.3s ease; }
         .bill-card.pending { border-color: var(--danger-color); background-color: var(--danger-light); }
         .bill-card.dispatched { border-color: var(--success-color); background-color: var(--success-light); }
-         
+        
         .bill-header { padding: 0.5rem 0.5rem; display: flex; flex-wrap: wrap; gap: 0rem; align-items: center; cursor: pointer; }
         .bill-header > div { flex: 1 1 150px; }
         .bill-header p { margin: 0; font-size: 0.9rem; }
         .bill-header p strong { font-size: 1.2rem; color: var(--primary-color); }
         .bill-header .bill-actions { flex-grow: 0; display: flex; gap: 0.5rem; }
-         
+        
         .action-btn { background: #f0f0f0; border: none; font-size: 1.2rem; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; transition: all 0.2s; }
         .action-btn svg { width: 20px; height: 20px; }
         .action-btn.whatsapp-btn { background-color: #e8f5e9; color: #25d366; }
@@ -240,7 +240,7 @@
         .action-btn.delete-btn:hover { background-color: var(--danger-color); color: white; }
         .action-btn.expand-btn { background-color: var(--secondary-light); color: var(--secondary-color); transition: transform 0.3s; }
         .action-btn.expand-btn.expanded { transform: rotate(180deg); }
-         
+        
         .bill-details { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out; }
         .bill-details-content { padding: 0 1.5rem 1.5rem; border-top: 1px dashed #ccc; }
 
@@ -265,13 +265,13 @@
             #print-content .center { text-align: center; }
             #print-qr-img { max-width: 150px; margin: 10px auto; display: block; }
         }
-         
+        
         /* --- Modal Style --- */
         #dispatchModal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.7); }
         .modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 90%; max-width: 500px; border-radius: 8px; text-align: center; }
         .manual-dispatch-box { display: flex; gap: 10px; margin-top: 20px; }
         .manual-dispatch-box input { flex-grow: 1; }
-         
+        
         /* --- NEW Toast Notification Styles --- */
         #toastContainer {
             position: fixed;
@@ -363,7 +363,7 @@
                     <h3>Product Details</h3>
                     <div class="product-entry-grid">
                         <input type="text" id="product-name" placeholder="Product Name">
-                        <input type="number" id="product-qty" placeholder="Qty" min="1">
+                        <input type="number" id="product-qty" placeholder="Qty" min="0.001" step="0.001">
                         <input type="number" id="product-price" placeholder="Price" min="0">
                         <button class="btn btn-secondary" onclick="addItemToCart()">Add Item</button>
                     </div>
@@ -408,7 +408,7 @@
              <p class="center">Thank you for your visit!</p>
         </div>
     </div>
-     
+    
     <div id="dispatchModal" class="no-print"><div class="modal-content"><h2>Update Bill Status</h2><div id="qr-reader"></div>
         <div class="manual-dispatch-box">
             <input type="number" class="btn" style="background:white; color:black; border:1px solid #ccc" id="billIdInput" placeholder="Or Enter Code">
@@ -444,7 +444,8 @@
 
         function addItemToCart() { 
             const name = document.getElementById('product-name').value.trim(), 
-                    qty = parseInt(document.getElementById('product-qty').value), 
+                    // UPDATED: parseFloat for decimal quantities
+                    qty = parseFloat(document.getElementById('product-qty').value), 
                     price = parseFloat(document.getElementById('product-price').value); 
             if (!name || isNaN(qty) || isNaN(price) || qty <= 0 || price < 0) return showToast("Please fill all product fields correctly", "error"); 
             cart.push({ name, qty, price, total: qty * price }); 
@@ -478,7 +479,7 @@
                 showToast("Cart cleared!", "error"); 
             } 
         } 
-         
+        
         async function generateBill() { 
             const custName = document.getElementById('cust-name').value.trim(), 
                     custPhone = document.getElementById('cust-phone').value.trim(), 
@@ -494,10 +495,10 @@
                 date: new Date().toLocaleString('en-IN', {day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'}), 
                 status: 'pending' 
             }; 
-             
+            
             bills.unshift(bill); 
             saveBills(); 
-             
+            
             try { 
                 const canvas = await QRCode.toCanvas(document.createElement('canvas'), JSON.stringify({ billId: bill.id })); 
                 document.getElementById('qrcode').innerHTML = ''; 
@@ -507,14 +508,14 @@
                 console.error(err); 
                 return showToast("Failed to generate QR Code", "error"); 
             } 
-             
+            
             document.getElementById('bill-id-display').innerText = `Unique Code: ${bill.id}`; 
             document.getElementById('qr-and-print-section').style.display = 'block'; 
             showToast(`Bill #${bill.id} Generated & Saved!`); 
             cart = []; updateCartTable(); 
             ['cust-name', 'cust-phone', 'cust-house'].forEach(id => document.getElementById(id).value = ''); 
         } 
-         
+        
         function preparePrintableArea(bill, qrDataUrl) { 
             document.getElementById('print-cust-details').innerHTML = `<p><strong>Bill To:</strong> ${bill.customer.name}</p><p><strong>Address:</strong> ${bill.customer.house}</p><p><strong>Date:</strong> ${bill.date}</p><p><strong>Bill ID:</strong> ${bill.id}</p>`; 
             const itemsTbody = bill.items.map(i => `<tr><td>${i.name}</td><td>${i.qty}</td><td>${i.total.toFixed(2)}</td></tr>`).join(''); 
@@ -525,7 +526,7 @@
 
         function renderHistory() { 
             const searchTerm = document.getElementById('historySearchInput').value.toLowerCase(); 
-            const filteredBills = bills.filter(bill =>  
+            const filteredBills = bills.filter(bill => 
                 bill.customer.name.toLowerCase().includes(searchTerm) || 
                 bill.customer.phone.includes(searchTerm) || 
                 bill.id.toString().includes(searchTerm) 
@@ -533,7 +534,7 @@
 
             const container = document.getElementById('bill-history-container'); 
             container.innerHTML = filteredBills.length === 0 ? '<p style="text-align:center;">No bills found.</p>' : ''; 
-             
+            
             filteredBills.forEach(bill => { 
                 const card = document.createElement('div'); 
                 card.className = `bill-card ${bill.status}`; 
@@ -552,7 +553,7 @@
                 container.appendChild(card); 
             }); 
         } 
-         
+        
         function toggleDetails(headerElement, billId) { 
             const expandBtn = headerElement.querySelector('.expand-btn'), detailsDiv = headerElement.nextElementSibling; 
             const isExpanded = detailsDiv.style.maxHeight && detailsDiv.style.maxHeight !== "0px"; 
@@ -566,7 +567,7 @@
                 expandBtn.classList.add('expanded'); 
             } 
         } 
-         
+        
         function handleManualDispatch() { 
             const id = parseInt(document.getElementById('billIdInput').value); 
             if(isNaN(id)) return showToast("Please enter a valid numeric code", "error"); 
@@ -591,141 +592,122 @@
                 showToast(`Bill #${billId} deleted.`, 'error'); 
             } 
         } 
-         
-        function sendWhatsApp(billId) { 
-            const bill = bills.find(b => b.id === billId); 
-            if(!bill) return; 
-            const itemsText = bill.items.map(i => `${i.name} (Qty: ${i.qty}) - ₹${i.total.toFixed(2)}`).join('%0A'); 
-            const message = `*Bill Details*%0A%0ABill ID: *${bill.id}*%0ACustomer: *${bill.customer.name}*%0AStatus: *${bill.status.toUpperCase()}*%0A%0A--- Items ---%0A${itemsText}%0A%0ATotal Amount: *₹${bill.total.toFixed(2)}*`; 
-            window.open(`https://wa.me/${bill.customer.phone}?text=${message}`, "_blank"); 
-        } 
-     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
-       function exportFormattedExcel() {
-    if (bills.length === 0) {
-        showToast("No bills to export.", "error");
-        return;
-    }
+        
+        // UPDATED: New helper function to format phone numbers
+        function formatPhoneNumberForWhatsApp(phone) {
+            let cleaned = phone.replace(/\D/g, '');
+            if (cleaned.startsWith('0')) {
+                cleaned = cleaned.substring(1);
+            }
+            if (cleaned.length === 10) {
+                return '91' + cleaned;
+            }
+            return cleaned;
+        }
 
-    // 1. Prepare the data in a format the library understands (array of objects)
-    const reportData = [];
-    const headers = [
-        "Customer Name",
-        "Phone Number",
-        "Address",
-        "Product Name",
-        "Quantity",
-        "Price per Item",
-        "Total Price",
-        "Date",
-        "Status"
-    ];
+        // UPDATED: sendWhatsApp now uses the formatter
+        function sendWhatsApp(billId) {
+            const bill = bills.find(b => b.id === billId);
+            if (!bill) return;
+            const formattedPhone = formatPhoneNumberForWhatsApp(bill.customer.phone);
+            const itemsText = bill.items.map(i => `${i.name} (Qty: ${i.qty}) - ₹${i.total.toFixed(2)}`).join('%0A');
+            const message = `*Bill Details*%0A%0ABill ID: *${bill.id}*%0ACustomer: *${bill.customer.name}*%0AStatus: *${bill.status.toUpperCase()}*%0A%0A--- Items ---%0A${itemsText}%0A%0ATotal Amount: *₹${bill.total.toFixed(2)}*`;
+            window.open(`https://wa.me/${formattedPhone}?text=${message}`, "_blank");
+        }
+        
+        function exportFormattedExcel() {
+            if (bills.length === 0) {
+                showToast("No bills to export.", "error");
+                return;
+            }
 
-    bills.forEach(bill => {
-        bill.items.forEach(item => {
-            reportData.push({
-                "Customer Name": bill.customer.name,
-                "Phone Number": bill.customer.phone,
-                "Address": bill.customer.house,
-                "Product Name": item.name,
-                "Quantity": item.qty,
-                "Price per Item": item.price,
-                "Total Price": item.total,
-                "Date": bill.date,
-                "Status": bill.status
+            let serialNumber = 1;
+            let grandTotal = 0;
+
+            const reportData = [];
+            const headers = [
+                "Sr. No.",
+                "Customer Name",
+                "Phone Number",
+                "Address",
+                "Product Name",
+                "Quantity",
+                "Price per Item",
+                "Total Price",
+                "Date",
+                "Status"
+            ];
+
+            bills.forEach(bill => {
+                bill.items.forEach(item => {
+                    reportData.push({
+                        "Sr. No.": serialNumber++,
+                        "Customer Name": bill.customer.name,
+                        "Phone Number": bill.customer.phone,
+                        "Address": bill.customer.house,
+                        "Product Name": item.name,
+                        "Quantity": item.qty,
+                        "Price per Item": item.price,
+                        "Total Price": item.total,
+                        "Date": bill.date,
+                        "Status": bill.status
+                    });
+                    grandTotal += item.total;
+                });
             });
-        });
-    });
 
-    // 2. Create a new workbook and a worksheet
-    const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.json_to_sheet(reportData, { header: headers });
+            const workbook = XLSX.utils.book_new();
+            const worksheet = XLSX.utils.json_to_sheet(reportData, { header: headers });
 
-    // 3. Calculate column widths to be "well-arranged"
-    const columnWidths = headers.map(header => {
-        const maxLength = Math.max(
-            header.length,
-            ...reportData.map(row => String(row[header] || "").length)
-        );
-        return { wch: maxLength + 2 }; // +2 for a little extra padding
-    });
-    worksheet['!cols'] = columnWidths;
+            const totalRow = {
+                "Price per Item": "Grand Total",
+                "Total Price": grandTotal
+            };
+            XLSX.utils.sheet_add_json(worksheet, [totalRow], {
+                skipHeader: true,
+                origin: -1
+            });
 
-    // 4. Add auto-filter functionality to be "well-managed"
-    const range = XLSX.utils.decode_range(worksheet['!ref']);
-    worksheet['!autofilter'] = { ref: XLSX.utils.encode_range(range) };
-    
-    // Set number formats for price columns
-    for (let i = 0; i < reportData.length; i++) {
-        // 'G' corresponds to 'Price per Item' and 'H' to 'Total Price' (1-based index)
-        const priceCellAddress = XLSX.utils.encode_cell({c: 5, r: i + 1}); // Column F (0-indexed 5)
-        const totalCellAddress = XLSX.utils.encode_cell({c: 6, r: i + 1}); // Column G (0-indexed 6)
-        XLSX.utils.cell_set_number_format(worksheet[priceCellAddress], '₹ #,##0.00');
-        XLSX.utils.cell_set_number_format(worksheet[totalCellAddress], '₹ #,##0.00');
-    }
+            const columnWidths = headers.map(header => {
+                const headerLength = header.length;
+                const dataRows = reportData.map(row => String(row[header] || "").length);
+                const maxLength = Math.max(headerLength, ...dataRows);
+                return { wch: maxLength + 2 };
+            });
+            worksheet['!cols'] = columnWidths;
 
+            const range = XLSX.utils.decode_range(worksheet['!ref']);
+            worksheet['!autofilter'] = { ref: XLSX.utils.encode_range(range) };
 
-    // 5. Append the worksheet to the workbook and trigger the download
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Bill Report");
-    XLSX.writeFile(workbook, `Formatted_Bill_Report_${new Date().toISOString().split('T')[0]}.xlsx`);
-
-    showToast("Formatted Excel export started!");
-} 
-     
-     function exportToExcel() { 
-            if (bills.length === 0) { 
-                return showToast("No bills to export.", "error"); 
-            } 
-
-            const sanitizeField = (field) => { 
-                let value = String(field || ''); 
-                value = value.replace(/(\r\n|\n|\r)/gm, " "); 
-                value = value.replace(/"/g, '""'); 
-                return `"${value}"`; 
-            }; 
-
-            const SEPARATOR = ';'; 
-            const headers = ["Bill ID", "Date", "Status", "Customer Name", "Customer Phone", "Customer Address", "Total Amount (INR)", "Items"]; 
+            const priceColIndex = 6;
+            const totalColIndex = 7;
             
-            const csvRows = [headers.join(SEPARATOR)]; 
+            for (let i = 0; i < reportData.length; i++) {
+                const priceCellAddress = XLSX.utils.encode_cell({c: priceColIndex, r: i + 1});
+                const totalCellAddress = XLSX.utils.encode_cell({c: totalColIndex, r: i + 1});
+                XLSX.utils.cell_set_number_format(worksheet[priceCellAddress], '₹ #,##0.00');
+                XLSX.utils.cell_set_number_format(worksheet[totalCellAddress], '₹ #,##0.00');
+            }
+            
+            const lastRowIndex = reportData.length + 1;
+            const grandTotalTextCellAddress = XLSX.utils.encode_cell({c: priceColIndex, r: lastRowIndex});
+            const grandTotalValueCellAddress = XLSX.utils.encode_cell({c: totalColIndex, r: lastRowIndex});
 
-            bills.forEach(bill => { 
-                const itemsStr = bill.items.map(i =>  
-                    `${i.name} (Qty: ${i.qty}, Price: ${i.price.toFixed(2)})` 
-                ).join(' | '); 
+            worksheet[grandTotalTextCellAddress].s = { font: { bold: true } };
+            worksheet[grandTotalValueCellAddress].s = {
+                font: { bold: true },
+                numFmt: '₹ #,##0.00'
+            };
 
-                const rowData = [ 
-                    bill.id, 
-                    bill.date, 
-                    bill.status, 
-                    bill.customer.name, 
-                    bill.customer.phone, 
-                    bill.customer.house, 
-                    bill.total.toFixed(2), 
-                    itemsStr 
-                ]; 
-                
-                csvRows.push(rowData.map(sanitizeField).join(SEPARATOR)); 
-            }); 
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Bill Report");
+            XLSX.writeFile(workbook, `Formatted_Bill_Report_${new Date().toISOString().split('T')[0]}.xlsx`);
 
-            const csvString = csvRows.join('\n'); 
-            const blob = new Blob([`\uFEFF${csvString}`], { type: 'text/csv;charset=utf-8;' }); 
+            showToast("Formatted Excel export with totals started!");
+        }
 
-            const link = document.createElement("a"); 
-            if (link.download !== undefined) { 
-                const url = URL.createObjectURL(blob); 
-                link.setAttribute("href", url); 
-                link.setAttribute("download", `bill_history_${new Date().toISOString().split('T')[0]}.csv`); 
-                link.style.visibility = 'hidden'; 
-                document.body.appendChild(link); 
-                link.click(); 
-                document.body.removeChild(link); 
-                showToast("Export started successfully!"); 
-            } 
-        } 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         function saveBills() { localStorage.setItem('anadiBills', JSON.stringify(bills)); } 
         function loadBills() { bills = JSON.parse(localStorage.getItem('anadiBills') || '[]'); } 
-         
+        
         function showToast(message, type = 'success') { 
             const container = document.getElementById('toastContainer'); 
             const toast = document.createElement('div'); 
