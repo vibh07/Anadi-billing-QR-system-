@@ -617,94 +617,116 @@
         }
         
         function exportFormattedExcel() {
-            if (bills.length === 0) {
-                showToast("No bills to export.", "error");
-                return;
-            }
+    if (bills.length === 0) {
+        showToast("No bills to export.", "error");
+        return;
+    }
 
-            let serialNumber = 1;
-            let grandTotal = 0;
+    // --- Initialize variables for Sr. No. and Grand Total ---
+    let serialNumber = 1;
+    let grandTotal = 0;
 
-            const reportData = [];
-            const headers = [
-                "Sr. No.",
-                "Customer Name",
-                "Phone Number",
-                "Address",
-                "Product Name",
-                "Quantity",
-                "Price per Item",
-                "Total Price",
-                "Date",
-                "Status"
-            ];
+    // 1. Prepare the data
+    const reportData = [];
+    const headers = [
+        "Sr. No.",
+        "Customer Name",
+        "Phone Number",
+        "Address",
+        "Product Name",
+        "Quantity",
+        "Price per Item",
+        "Total Price",
+        "Date",
+        "Status"
+    ];
 
-            bills.forEach(bill => {
-                bill.items.forEach(item => {
-                    reportData.push({
-                        "Sr. No.": serialNumber++,
-                        "Customer Name": bill.customer.name,
-                        "Phone Number": bill.customer.phone,
-                        "Address": bill.customer.house,
-                        "Product Name": item.name,
-                        "Quantity": item.qty,
-                        "Price per Item": item.price,
-                        "Total Price": item.total,
-                        "Date": bill.date,
-                        "Status": bill.status
-                    });
-                    grandTotal += item.total;
-                });
+    bills.forEach(bill => {
+        bill.items.forEach(item => {
+            reportData.push({
+                "Sr. No.": serialNumber++,
+                "Customer Name": bill.customer.name,
+                "Phone Number": bill.customer.phone,
+                "Address": bill.customer.house,
+                "Product Name": item.name,
+                "Quantity": item.qty,
+                "Price per Item": item.price,
+                "Total Price": item.total,
+                "Date": bill.date,
+                "Status": bill.status
             });
+            grandTotal += item.total;
+        });
+    });
 
-            const workbook = XLSX.utils.book_new();
-            const worksheet = XLSX.utils.json_to_sheet(reportData, { header: headers });
+    // 2. Create a new workbook and a worksheet from the data
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(reportData, { header: headers });
 
-            const totalRow = {
-                "Price per Item": "Grand Total",
-                "Total Price": grandTotal
-            };
-            XLSX.utils.sheet_add_json(worksheet, [totalRow], {
-                skipHeader: true,
-                origin: -1
-            });
+    // --- Add the Grand Total Row at the end ---
+    const totalRow = {
+        "Price per Item": "Grand Total", // Text placed in this column
+        "Total Price": grandTotal         // Value placed in this column
+    };
+    XLSX.utils.sheet_add_json(worksheet, [totalRow], {
+        skipHeader: true, // Don't add a new header for this row
+        origin: -1        // Add it to the end of the sheet
+    });
 
-            const columnWidths = headers.map(header => {
-                const headerLength = header.length;
-                const dataRows = reportData.map(row => String(row[header] || "").length);
-                const maxLength = Math.max(headerLength, ...dataRows);
-                return { wch: maxLength + 2 };
-            });
-            worksheet['!cols'] = columnWidths;
+    // 3. Calculate column widths to be "well-arranged"
+    const columnWidths = headers.map(header => {
+        const headerLength = header ? header.length : 10;
+        const dataRows = reportData.map(row => String(row[header] || "").length);
+        const maxLength = Math.max(headerLength, ...dataRows);
+        return { wch: maxLength + 2 }; // +2 for a little extra padding
+    });
+    // Adjust width for the grand total row text if necessary
+    const grandTotalTextLength = "Grand Total".length;
+    if (columnWidths[6].wch < grandTotalTextLength + 2) {
+        columnWidths[6].wch = grandTotalTextLength + 2;
+    }
+    worksheet['!cols'] = columnWidths;
 
-            const range = XLSX.utils.decode_range(worksheet['!ref']);
-            worksheet['!autofilter'] = { ref: XLSX.utils.encode_range(range) };
+    // 4. Add auto-filter functionality to be "well-managed"
+    const range = XLSX.utils.decode_range(worksheet['!ref']);
+    worksheet['!autofilter'] = { ref: XLSX.utils.encode_range(range) };
 
-            const priceColIndex = 6;
-            const totalColIndex = 7;
-            
-            for (let i = 0; i < reportData.length; i++) {
-                const priceCellAddress = XLSX.utils.encode_cell({c: priceColIndex, r: i + 1});
-                const totalCellAddress = XLSX.utils.encode_cell({c: totalColIndex, r: i + 1});
-                XLSX.utils.cell_set_number_format(worksheet[priceCellAddress], '₹ #,##0.00');
-                XLSX.utils.cell_set_number_format(worksheet[totalCellAddress], '₹ #,##0.00');
-            }
-            
-            const lastRowIndex = reportData.length + 1;
-            const grandTotalTextCellAddress = XLSX.utils.encode_cell({c: priceColIndex, r: lastRowIndex});
-            const grandTotalValueCellAddress = XLSX.utils.encode_cell({c: totalColIndex, r: lastRowIndex});
+    // 5. Apply number formatting for currency columns
+    const priceColIndex = 6; // 'Price per Item' is the 7th column (index 6)
+    const totalColIndex = 7; // 'Total Price' is the 8th column (index 7)
+    
+    // Loop through data rows (skip header row 1)
+    for (let i = 0; i < reportData.length; i++) {
+        const priceCellAddress = XLSX.utils.encode_cell({c: priceColIndex, r: i + 1});
+        const totalCellAddress = XLSX.utils.encode_cell({c: totalColIndex, r: i + 1});
+        if(worksheet[priceCellAddress]) XLSX.utils.cell_set_number_format(worksheet[priceCellAddress], '₹ #,##0.00');
+        if(worksheet[totalCellAddress]) XLSX.utils.cell_set_number_format(worksheet[totalCellAddress], '₹ #,##0.00');
+    }
+    
+    // --- Style the Grand Total Row ---
+    const lastRowIndex = reportData.length + 1;
+    const grandTotalTextCellAddress = XLSX.utils.encode_cell({c: priceColIndex, r: lastRowIndex});
+    const grandTotalValueCellAddress = XLSX.utils.encode_cell({c: totalColIndex, r: lastRowIndex});
 
-            worksheet[grandTotalTextCellAddress].s = { font: { bold: true } };
-            worksheet[grandTotalValueCellAddress].s = {
-                font: { bold: true },
-                numFmt: '₹ #,##0.00'
-            };
+    // Style the "Grand Total" text cell
+    if(worksheet[grandTotalTextCellAddress]) {
+       worksheet[grandTotalTextCellAddress].s = { font: { bold: true } };
+    }
 
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Bill Report");
-            XLSX.writeFile(workbook, `Formatted_Bill_Report_${new Date().toISOString().split('T')[0]}.xlsx`);
+    // Style the Grand Total value cell (bold and currency format)
+    if(worksheet[grandTotalValueCellAddress]) {
+        worksheet[grandTotalValueCellAddress].s = {
+            font: { bold: true },
+            numFmt: '₹ #,##0.00'
+        };
+    }
 
-            showToast("Formatted Excel export with totals started!");
-        }
+    // 6. Append the worksheet to the workbook and trigger the download
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Bill Report");
+    XLSX.writeFile(workbook, `Formatted_Bill_Report_${new Date().toISOString().split('T')[0]}.xlsx`);
+
+    showToast("Formatted Excel export with totals started!");
+}
 
         function saveBills() { localStorage.setItem('anadiBills', JSON.stringify(bills)); } 
         function loadBills() { bills = JSON.parse(localStorage.getItem('anadiBills') || '[]'); } 
