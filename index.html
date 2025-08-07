@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anadi QR Billing System</title>
+    <title>Anadi Billing System</title>
     <link rel="icon" type="image/x-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpSUECPfnUCAQ0A5l2QBVlZNzlAImCOHl0SA&s">
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <style>
@@ -25,48 +24,24 @@
             --shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             --border-radius: 8px;
         }
-
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--light-gray);
             color: var(--dark-text);
             line-height: 1.6;
         }
-
-        /* --- ENHANCED Login Page --- */
         #login-page {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #34495e, #2c3e50);
-            overflow: hidden; /* Hide overflowing shapes */
-            position: relative;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; background: linear-gradient(135deg, #34495e, #2c3e50);
+            overflow: hidden; position: relative;
         }
-
-        /* Animated background shapes */
-        .background-shapes {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
+        .background-shapes { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
         .background-shapes li {
-            position: absolute;
-            display: block;
-            list-style: none;
-            width: 20px;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            animation: animateShapes 25s linear infinite;
-            bottom: -150px;
+            position: absolute; display: block; list-style: none;
+            width: 20px; height: 20px; background: rgba(255, 255, 255, 0.1);
+            animation: animateShapes 25s linear infinite; bottom: -150px;
         }
         .background-shapes li:nth-child(1){ left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
         .background-shapes li:nth-child(2){ left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
@@ -78,162 +53,88 @@
         .background-shapes li:nth-child(8){ left: 50%; width: 25px; height: 25px; animation-delay: 15s; animation-duration: 45s; }
         .background-shapes li:nth-child(9){ left: 20%; width: 15px; height: 15px; animation-delay: 2s; animation-duration: 35s; }
         .background-shapes li:nth-child(10){ left: 85%; width: 150px; height: 150px; animation-delay: 0s; animation-duration: 11s; }
-
         @keyframes animateShapes {
             0%{ transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
             100%{ transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
         }
-        
         #login-box {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-               padding: 1.5rem 2rem;
-            border-radius: 15px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
-            z-index: 2;
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem; border-radius: 15px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            text-align: center; width: 90%; max-width: 400px; z-index: 2;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: slideFadeIn 0.8s ease-out forwards;
-            opacity: 0;
+            animation: slideFadeIn 0.8s ease-out forwards; opacity: 0;
         }
-
         @keyframes slideFadeIn {
             from { opacity: 0; transform: translateY(50px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
-        #login-box h1 {
-            color: var(--primary-color);
-            margin-bottom: 2.5rem;
-            font-weight: 600;
-            font-size: 2rem;
-        }
-        
-        .input-field {
-            position: relative;
-            margin-bottom: 2rem;
-        }
-        
+        #login-box h1 { color: var(--primary-color); margin-bottom: 2.5rem; font-weight: 600; font-size: 2rem; }
+        .input-field { position: relative; margin-bottom: 2rem; }
         .input-field input {
-            width: 100%;
-            padding: 1rem 1rem 0.5rem 2.5rem; /* Make space for icon and label */
-            border: none;
-            border-bottom: 2px solid #ccc;
-            background: transparent;
-            font-size: 1rem;
-            color: var(--dark-text);
-            outline: none;
-            transition: border-color 0.3s;
+            width: 100%; padding: 1rem 1rem 0.5rem 2.5rem; border: none;
+            border-bottom: 2px solid #ccc; background: transparent;
+            font-size: 1rem; color: var(--dark-text); outline: none; transition: border-color 0.3s;
         }
-        
-        .input-field .icon {
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #888;
-            transition: color 0.3s;
-        }
-
+        .input-field .icon { position: absolute; left: 0; top: 50%; transform: translateY(-50%); color: #888; transition: color 0.3s; }
         .input-field input:focus ~ .icon,
-        .input-field input:not(:placeholder-shown) ~ .icon {
-            color: var(--secondary-color);
-        }
-
+        .input-field input:not(:placeholder-shown) ~ .icon { color: var(--secondary-color); }
         .input-field label {
-            position: absolute;
-            top: 0.8rem;
-            left: 2.5rem;
-            color: #999;
-            font-size: 1rem;
-            pointer-events: none;
-            transition: all 0.3s ease;
+            position: absolute; top: 0.8rem; left: 2.5rem; color: #999;
+            font-size: 1rem; pointer-events: none; transition: all 0.3s ease;
         }
-
         .input-field input:focus + label,
-        .input-field input:not(:placeholder-shown) + label {
-            top: -10px;
-            font-size: 0.8rem;
-            color: var(--secondary-color);
-        }
-
-        .input-field input:focus {
-            border-bottom-color: var(--secondary-color);
-        }
-        
-        /* --- Buttons --- */
+        .input-field input:not(:placeholder-shown) + label { top: -10px; font-size: 0.8rem; color: var(--secondary-color); }
+        .input-field input:focus { border-bottom-color: var(--secondary-color); }
         .btn { padding: 0.8rem 1.5rem; font-size: 1rem; font-weight: 600; cursor: pointer; border: none; border-radius: var(--border-radius); color: white; transition: all 0.3s ease; width: 100%; }
         .btn:hover { transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.25); }
-        
         .btn-primary {
             background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
-            background-size: 200% 100%;
-            transition: background-position 0.5s ease;
+            background-size: 200% 100%; transition: background-position 0.5s ease;
         }
-        .btn-primary:hover {
-            background-position: 100% 0;
-        }
-        
+        .btn-primary:hover { background-position: 100% 0; }
         .btn-secondary { background-color: var(--secondary-color); }
         .btn-success { background-color: var(--success-color); }
         .btn-danger { background-color: var(--danger-color); }
         .btn-warning { background-color: var(--warning-color); }
-
-        /* --- Main Page --- */
         #main-page { display: none; }
         header {
-            background-color: #ffffff;
-            color: var(--primary-color);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            background-color: #ffffff; color: var(--primary-color); padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); position: sticky; top: 0; z-index: 100;
         }
         header h2 { font-weight: 600; }
         nav button { background: none; border: 2px solid var(--primary-color); color: var(--primary-color); padding: 0.5rem 1rem; border-radius: var(--border-radius); cursor: pointer; transition: all 0.3s ease; font-weight: 600; }
         nav button.active, nav button:hover { background: var(--primary-color); color: var(--white); }
-        
         .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
         .tab { display: none; }
         .tab.active { display: block; animation: fadeIn 0.5s; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
         .form-section { background: var(--white); padding: 1.5rem; border-radius: var(--border-radius); margin-bottom: 2rem; box-shadow: var(--shadow); }
         .form-section h3 { margin-top: 0; font-weight: 600; color: var(--primary-color); border-bottom: 2px solid var(--light-gray); padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
         .form-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
         .product-entry-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; align-items: end;}
-
         table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
         th, td { padding: 0.8rem; text-align: left; border-bottom: 1px solid #ddd; vertical-align: middle; }
         thead { background-color: #f8f9fa; }
-        
         .action-buttons-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 1.5rem; }
         .action-buttons-container .btn { width: auto; flex-grow: 1; }
-        
         #qr-and-print-section { text-align: center; margin-top: 2rem; padding: 2rem; background: var(--white); border-radius: var(--border-radius); box-shadow: var(--shadow); }
-
-        /* --- History Page --- */
         .history-controls { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; align-items: center; }
         #historySearchInput { flex: 1 1 300px; padding: 0.8rem; font-size: 1rem; border-radius: var(--border-radius); border: 1px solid #ccc; }
         .history-controls button { flex: 1 1 150px; width: auto; }
-
-        .bill-card { background: var(--white); border-radius: var(--border-radius); margin-bottom: 1rem; box-shadow: var(--shadow); border-left: 5px solid; transition: all 0.3s ease; }
+        .bill-card { border-radius: var(--border-radius); margin-bottom: 1rem; box-shadow: var(--shadow); border-left: 5px solid; transition: all 0.3s ease; }
         .bill-card.pending { border-color: var(--danger-color); background-color: var(--danger-light); }
         .bill-card.dispatched { border-color: var(--success-color); background-color: var(--success-light); }
-        
-        .bill-header { padding-left: 0.1rem; display: flex; flex-wrap: wrap; gap: 0rem; align-items: center; cursor: pointer; }
+        .bill-header { padding: 1rem 1.5rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; cursor: pointer; }
         .bill-header > div { flex: 1 1 150px; }
         .bill-header p { margin: 0; font-size: 0.9rem; }
         .bill-header p strong { font-size: 1.2rem; color: var(--primary-color); }
-        .bill-header .bill-actions { flex-grow: 0; display: flex; gap: 0.5rem; }
-        
-        .action-btn { background: #f0f0f0; border: none; font-size: 1.2rem; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; transition: all 0.2s; }
+        .bill-header .bill-actions { flex-grow: 0; display: flex; align-items: center; justify-content: flex-end; gap: 0.5rem; }
+        .action-btn {
+            background: rgba(0,0,0,0.05); border: none; font-size: 1.2rem; cursor: pointer;
+            width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            transition: all 0.2s;
+        }
         .action-btn svg { width: 20px; height: 20px; }
         .action-btn.whatsapp-btn { background-color: #e8f5e9; color: #25d366; }
         .action-btn.whatsapp-btn:hover { background-color: #25d366; color: white; }
@@ -241,18 +142,37 @@
         .action-btn.delete-btn:hover { background-color: var(--danger-color); color: white; }
         .action-btn.expand-btn { background-color: var(--secondary-light); color: var(--secondary-color); transition: transform 0.3s; }
         .action-btn.expand-btn.expanded { transform: rotate(180deg); }
-        
         .bill-details { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out; }
         .bill-details-content { padding: 0 1.5rem 1.5rem; border-top: 1px dashed #ccc; }
-
-        /* --- Responsive Design --- */
+        .payment-status { font-weight: bold; padding: 2px 6px; border-radius: 4px; color: white; font-size: 0.8em; }
+        .payment-status.paid { background-color: var(--success-color); }
+        .payment-status.unpaid { background-color: var(--warning-color); }
+        .payment-toggle-container { display: flex; align-items: center; justify-content: center; margin-left: 10px; }
+        .payment-toggle { opacity: 0; width: 0; height: 0; }
+        .payment-toggle-label {
+            cursor: pointer; width: 50px; height: 26px; background: var(--danger-color); display: block;
+            border-radius: 100px; position: relative; transition: background-color 0.2s;
+        }
+        .payment-toggle-label:after {
+            content: ''; position: absolute; top: 2px; left: 2px; width: 22px; height: 22px;
+            background: #fff; border-radius: 90px; transition: 0.2s;
+        }
+        .payment-toggle:checked + .payment-toggle-label { background: var(--success-color); }
+        .payment-toggle:checked + .payment-toggle-label:after { left: calc(100% - 2px); transform: translateX(-100%); }
         @media (min-width: 768px) {
             .form-grid { grid-template-columns: 1fr 1fr; }
             .customer-grid { grid-template-columns: 1fr 1fr 1fr; }
             .product-entry-grid { grid-template-columns: 3fr 1fr 1fr auto; }
         }
-
-        /* --- Print Area --- */
+        @media (min-width: 992px) {
+            .bill-header { justify-content: space-between; }
+            .bill-header .bill-actions { order: 1; flex-grow: 0; }
+            .bill-header .bill-info-id,
+            .bill-header .bill-info-customer,
+            .bill-header .bill-info-total { order: 2; }
+            .bill-header .bill-info-customer { text-align: center; }
+            .bill-header .bill-info-total { text-align: right; }
+        }
         .print-only { display: none; }
         @media print {
             body > .no-print { display: none !important; }
@@ -266,45 +186,30 @@
             #print-content .center { text-align: center; }
             #print-qr-img { max-width: 150px; margin: 10px auto; display: block; }
         }
-        
-        /* --- Modal Style --- */
         #dispatchModal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.7); }
         .modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 90%; max-width: 500px; border-radius: 8px; text-align: center; }
+        /* Simple style for the QR Reader div */
+        #qr-reader {
+            border: 2px dashed #ccc;
+            margin-bottom: 1rem;
+        }
         .manual-dispatch-box { display: flex; gap: 10px; margin-top: 20px; }
         .manual-dispatch-box input { flex-grow: 1; }
-        
-        /* --- NEW Toast Notification Styles --- */
         #toastContainer {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 2000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            z-index: 2000; display: flex; flex-direction: column; align-items: center; gap: 10px;
         }
-
         .toast {
-            color: white;
-            font-weight: 600;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-            border-radius: var(--border-radius);
-            width: 350px; /* Fixed width for consistent animation */
-            overflow: hidden; /* Crucial for hiding text initially */
+            color: white; font-weight: 600; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            border-radius: var(--border-radius); width: 350px; overflow: hidden;
         }
-
         .toast.success { background-color: var(--success-color); }
         .toast.error { background-color: var(--danger-color); }
-
-        /* New Animation Keyframes */
         @keyframes line-to-box-in {
             0% { max-height: 0; width: 0; padding: 0; opacity: 0; border-radius: 0; }
             30% { max-height: 2px; width: 350px; padding: 0; opacity: 1; border-radius: 0; }
             100% { max-height: 100px; width: 350px; padding: 1rem 1.5rem; opacity: 1; }
         }
-
         @keyframes line-to-box-out {
             0% { max-height: 100px; padding: 1rem 1.5rem; opacity: 1; }
             70% { max-height: 2px; padding: 0; opacity: 1; overflow: hidden; }
@@ -312,7 +217,6 @@
         }
     </style>
 </head>
-
 <body>
     <div id="login-page" class="no-print">
         <ul class="background-shapes">
@@ -324,18 +228,14 @@
                 <input type="text" id="username" required placeholder=" ">
                 <label for="username">Enter Your Name</label>
                 <span class="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
-                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
                 </span>
             </div>
             <div class="input-field">
                 <input type="password" id="password" required placeholder=" ">
                 <label for="password">Enter Password</label>
                 <span class="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2M5 9a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z"/>
-                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2M5 9a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z"/></svg>
                 </span>
             </div>
             <button class="btn btn-primary" onclick="handleLogin()">Login</button>
@@ -398,8 +298,7 @@
     <div id="printable-area" class="print-only">
         <div id="print-content">
              <h2>Anadi Industries LLP</h2>
-             <p class="center"> Sohna Road Opp Haryana Gramin Bank Village Pali 
-                        Faridabad Haryana 121004</p>
+             <p class="center"> Sohna Road Opp Haryana Gramin Bank Village Pali Faridabad Haryana 121004</p>
              <hr>
              <div id="print-cust-details"></div>
              <hr>
@@ -411,13 +310,18 @@
         </div>
     </div>
     
-    <div id="dispatchModal" class="no-print"><div class="modal-content"><h2>Update Bill Status</h2><div id="qr-reader"></div>
-        <div class="manual-dispatch-box">
-            <input type="number" class="btn" style="background:white; color:black; border:1px solid #ccc" id="billIdInput" placeholder="Or Enter Code">
-            <button class="btn btn-success" onclick="handleManualDispatch()">Dispatch</button>
-        </div><br>
-        <button class="btn btn-danger" onclick="closeDispatchModal()">Close</button>
-    </div></div>
+    <div id="dispatchModal" class="no-print">
+        <div class="modal-content">
+            <h2>Update Bill Status</h2>
+            <div id="qr-reader" style="width:100%;"></div>
+            <div class="manual-dispatch-box">
+                <input type="number" class="btn" style="background:white; color:black; border:1px solid #ccc" id="billIdInput" placeholder="Or Enter Code Manually">
+                <button class="btn btn-success" onclick="handleManualDispatch()">Dispatch</button>
+            </div><br>
+            <button class="btn btn-danger" onclick="closeDispatchModal()">Close</button>
+        </div>
+    </div>
+
     <div id="toastContainer" class="no-print"></div>
 
     <script>
@@ -446,9 +350,8 @@
 
         function addItemToCart() { 
             const name = document.getElementById('product-name').value.trim(), 
-                    // UPDATED: parseFloat for decimal quantities
-                    qty = parseFloat(document.getElementById('product-qty').value), 
-                    price = parseFloat(document.getElementById('product-price').value); 
+                  qty = parseFloat(document.getElementById('product-qty').value), 
+                  price = parseFloat(document.getElementById('product-price').value); 
             if (!name || isNaN(qty) || isNaN(price) || qty <= 0 || price < 0) return showToast("Please fill all product fields correctly", "error"); 
             cart.push({ name, qty, price, total: qty * price }); 
             updateCartTable(); 
@@ -484,8 +387,8 @@
         
         async function generateBill() { 
             const custName = document.getElementById('cust-name').value.trim(), 
-                    custPhone = document.getElementById('cust-phone').value.trim(), 
-                    custHouse = document.getElementById('cust-house').value.trim(); 
+                  custPhone = document.getElementById('cust-phone').value.trim(), 
+                  custHouse = document.getElementById('cust-house').value.trim(); 
             if (!custName || !custPhone || !custHouse) return showToast("Please fill customer details", "error"); 
             if (cart.length === 0) return showToast("Cart is empty", "error"); 
 
@@ -495,7 +398,8 @@
                 items: [...cart], 
                 total: cart.reduce((sum, item) => sum + item.total, 0), 
                 date: new Date().toLocaleString('en-IN', {day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'}), 
-                status: 'pending' 
+                status: 'pending',
+                paymentStatus: 'unpaid'
             }; 
             
             bills.unshift(bill); 
@@ -542,10 +446,18 @@
                 card.className = `bill-card ${bill.status}`; 
                 card.innerHTML = ` 
                     <div class="bill-header" onclick="toggleDetails(this, ${bill.id})"> 
-                        <div><p><strong>#${bill.id}</strong><br><small>${bill.status.toUpperCase()}</small></p></div> 
-                        <div><p>${bill.customer.name}<br><small>${bill.customer.phone}</small></p></div> 
-                        <div><p>₹${bill.total.toFixed(2)}<br><small>${bill.date}</small></p></div> 
-                        <div class="bill-actions" onclick="event.stopPropagation()"> 
+                        <div class="bill-info-id"><p><strong>#${bill.id}</strong><br><small>${bill.status.toUpperCase()}</small></p></div> 
+                        <div class="bill-info-customer"><p>${bill.customer.name}<br><small>${bill.customer.phone}</small></p></div> 
+                        <div class="bill-info-total">
+                            <p>₹${bill.total.toFixed(2)}<br>
+                                <span class="payment-status ${bill.paymentStatus}">${bill.paymentStatus.toUpperCase()}</span>
+                            </p>
+                        </div> 
+                        <div class="bill-actions" onclick="event.stopPropagation()">
+                            <div class="payment-toggle-container" title="Toggle Payment Status">
+                                <input type="checkbox" id="pay-toggle-${bill.id}" class="payment-toggle" onchange="togglePaymentStatus(${bill.id}, this.checked)" ${bill.paymentStatus === 'paid' ? 'checked' : ''}>
+                                <label for="pay-toggle-${bill.id}" class="payment-toggle-label"></label>
+                            </div>
                             <button class="action-btn whatsapp-btn" title="Send on WhatsApp" onclick="sendWhatsApp(${bill.id})">${whatsappIcon}</button> 
                             <button class="action-btn delete-btn" title="Delete Bill" onclick="deleteBill(${bill.id})">🗑️</button> 
                             <button class="action-btn expand-btn" title="View Details">▼</button> 
@@ -570,6 +482,21 @@
             } 
         } 
         
+        function togglePaymentStatus(billId, isChecked) {
+            const bill = bills.find(b => b.id === billId);
+            if (!bill) return;
+
+            bill.paymentStatus = isChecked ? 'paid' : 'unpaid';
+            saveBills();
+            
+            const card = document.querySelector(`#pay-toggle-${billId}`).closest('.bill-card');
+            const statusSpan = card.querySelector('.payment-status');
+            statusSpan.textContent = bill.paymentStatus.toUpperCase();
+            statusSpan.className = `payment-status ${bill.paymentStatus}`;
+
+            showToast(`Bill #${billId} marked as ${bill.paymentStatus}.`);
+        }
+
         function handleManualDispatch() { 
             const id = parseInt(document.getElementById('billIdInput').value); 
             if(isNaN(id)) return showToast("Please enter a valid numeric code", "error"); 
@@ -595,139 +522,78 @@
             } 
         } 
         
-        // UPDATED: New helper function to format phone numbers
         function formatPhoneNumberForWhatsApp(phone) {
             let cleaned = phone.replace(/\D/g, '');
-            if (cleaned.startsWith('0')) {
-                cleaned = cleaned.substring(1);
-            }
-            if (cleaned.length === 10) {
-                return '91' + cleaned;
-            }
+            if (cleaned.startsWith('0')) { cleaned = cleaned.substring(1); }
+            if (cleaned.length === 10) { return '91' + cleaned; }
             return cleaned;
         }
 
-        // UPDATED: sendWhatsApp now uses the formatter
         function sendWhatsApp(billId) {
             const bill = bills.find(b => b.id === billId);
             if (!bill) return;
             const formattedPhone = formatPhoneNumberForWhatsApp(bill.customer.phone);
             const itemsText = bill.items.map(i => `${i.name} (Qty: ${i.qty}) - ₹${i.total.toFixed(2)}`).join('%0A');
-            const message = `*Bill Details*%0A%0ABill ID: *${bill.id}*%0ACustomer: *${bill.customer.name}*%0AStatus: *${bill.status.toUpperCase()}*%0A%0A--- Items ---%0A${itemsText}%0A%0ATotal Amount: *₹${bill.total.toFixed(2)}*`;
+            const message = `*Bill Details*%0A%0ABill ID: *${bill.id}*%0ACustomer: *${bill.customer.name}*%0ADispatch Status: *${bill.status.toUpperCase()}*%0APayment Status: *${bill.paymentStatus.toUpperCase()}*%0A%0A--- Items ---%0A${itemsText}%0A%0ATotal Amount: *₹${bill.total.toFixed(2)}*`;
             window.open(`https://wa.me/${formattedPhone}?text=${message}`, "_blank");
         }
         
         function exportFormattedExcel() {
-    if (bills.length === 0) {
-        showToast("No bills to export.", "error");
-        return;
-    }
-
-    // --- Initialize variables for Sr. No. and Grand Total ---
-    let serialNumber = 1;
-    let grandTotal = 0;
-
-    // 1. Prepare the data
-    const reportData = [];
-    const headers = [
-        "Sr. No.",
-        "Customer Name",
-        "Phone Number",
-        "Address",
-        "Product Name",
-        "Quantity",
-        "Price per Item",
-        "Total Price",
-        "Date",
-        "Status"
-    ];
-
-    bills.forEach(bill => {
-        bill.items.forEach(item => {
-            reportData.push({
-                "Sr. No.": serialNumber++,
-                "Customer Name": bill.customer.name,
-                "Phone Number": bill.customer.phone,
-                "Address": bill.customer.house,
-                "Product Name": item.name,
-                "Quantity": item.qty,
-                "Price per Item": item.price,
-                "Total Price": item.total,
-                "Date": bill.date,
-                "Status": bill.status
+            if (bills.length === 0) {
+                showToast("No bills to export.", "error");
+                return;
+            }
+            let serialNumber = 1, grandTotal = 0;
+            const headers = [
+                "Sr. No.", "Customer Name", "Phone Number", "Address", "Product Name",
+                "Quantity", "Price per Item", "Total Price", "Date", "Dispatch Status", "Payment Status"
+            ];
+            const reportData = [];
+            bills.forEach(bill => {
+                bill.items.forEach(item => {
+                    reportData.push({
+                        "Sr. No.": serialNumber++, "Customer Name": bill.customer.name,
+                        "Phone Number": bill.customer.phone, "Address": bill.customer.house,
+                        "Product Name": item.name, "Quantity": item.qty,
+                        "Price per Item": item.price, "Total Price": item.total,
+                        "Date": bill.date, "Dispatch Status": bill.status,
+                        "Payment Status": bill.paymentStatus
+                    });
+                    grandTotal += item.total;
+                });
             });
-            grandTotal += item.total;
-        });
-    });
-
-    // 2. Create a new workbook and a worksheet from the data
-    const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.json_to_sheet(reportData, { header: headers });
-
-    // --- Add the Grand Total Row at the end ---
-    const totalRow = {
-        "Price per Item": "Grand Total", // Text placed in this column
-        "Total Price": grandTotal         // Value placed in this column
-    };
-    XLSX.utils.sheet_add_json(worksheet, [totalRow], {
-        skipHeader: true, // Don't add a new header for this row
-        origin: -1        // Add it to the end of the sheet
-    });
-
-    // 3. Calculate column widths to be "well-arranged"
-    const columnWidths = headers.map(header => {
-        const headerLength = header ? header.length : 10;
-        const dataRows = reportData.map(row => String(row[header] || "").length);
-        const maxLength = Math.max(headerLength, ...dataRows);
-        return { wch: maxLength + 2 }; // +2 for a little extra padding
-    });
-    // Adjust width for the grand total row text if necessary
-    const grandTotalTextLength = "Grand Total".length;
-    if (columnWidths[6].wch < grandTotalTextLength + 2) {
-        columnWidths[6].wch = grandTotalTextLength + 2;
-    }
-    worksheet['!cols'] = columnWidths;
-
-    // 4. Add auto-filter functionality to be "well-managed"
-    const range = XLSX.utils.decode_range(worksheet['!ref']);
-    worksheet['!autofilter'] = { ref: XLSX.utils.encode_range(range) };
-
-    // 5. Apply number formatting for currency columns
-    const priceColIndex = 6; // 'Price per Item' is the 7th column (index 6)
-    const totalColIndex = 7; // 'Total Price' is the 8th column (index 7)
-    
-    // Loop through data rows (skip header row 1)
-    for (let i = 0; i < reportData.length; i++) {
-        const priceCellAddress = XLSX.utils.encode_cell({c: priceColIndex, r: i + 1});
-        const totalCellAddress = XLSX.utils.encode_cell({c: totalColIndex, r: i + 1});
-        if(worksheet[priceCellAddress]) XLSX.utils.cell_set_number_format(worksheet[priceCellAddress], '₹ #,##0.00');
-        if(worksheet[totalCellAddress]) XLSX.utils.cell_set_number_format(worksheet[totalCellAddress], '₹ #,##0.00');
-    }
-    
-    // --- Style the Grand Total Row ---
-    const lastRowIndex = reportData.length + 1;
-    const grandTotalTextCellAddress = XLSX.utils.encode_cell({c: priceColIndex, r: lastRowIndex});
-    const grandTotalValueCellAddress = XLSX.utils.encode_cell({c: totalColIndex, r: lastRowIndex});
-
-    // Style the "Grand Total" text cell
-    if(worksheet[grandTotalTextCellAddress]) {
-       worksheet[grandTotalTextCellAddress].s = { font: { bold: true } };
-    }
-
-    // Style the Grand Total value cell (bold and currency format)
-    if(worksheet[grandTotalValueCellAddress]) {
-        worksheet[grandTotalValueCellAddress].s = {
-            font: { bold: true },
-            numFmt: '₹ #,##0.00'
-        };
-    }
-
-    // 6. Append the worksheet to the workbook and trigger the download
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Bill Report");
-    XLSX.writeFile(workbook, `Formatted_Bill_Report_${new Date().toISOString().split('T')[0]}.xlsx`);
-
-    showToast("Formatted Excel export with totals started!");
-}
+            const workbook = XLSX.utils.book_new();
+            const worksheet = XLSX.utils.json_to_sheet(reportData, { header: headers });
+            const totalRow = { "Price per Item": "Grand Total", "Total Price": grandTotal };
+            XLSX.utils.sheet_add_json(worksheet, [totalRow], { skipHeader: true, origin: -1 });
+            const columnWidths = headers.map(header => {
+                const headerLength = header ? header.length : 10;
+                const dataRows = reportData.map(row => String(row[header] || "").length);
+                return { wch: Math.max(headerLength, ...dataRows) + 2 };
+            });
+            if (columnWidths[6].wch < "Grand Total".length + 2) { columnWidths[6].wch = "Grand Total".length + 2; }
+            worksheet['!cols'] = columnWidths;
+            const range = XLSX.utils.decode_range(worksheet['!ref']);
+            worksheet['!autofilter'] = { ref: XLSX.utils.encode_range(range) };
+            const priceColIndex = headers.indexOf("Price per Item");
+            const totalColIndex = headers.indexOf("Total Price");
+            for (let i = 0; i < reportData.length; i++) {
+                const priceCell = XLSX.utils.encode_cell({c: priceColIndex, r: i + 1});
+                const totalCell = XLSX.utils.encode_cell({c: totalColIndex, r: i + 1});
+                if(worksheet[priceCell]) XLSX.utils.cell_set_number_format(worksheet[priceCell], '₹ #,##0.00');
+                if(worksheet[totalCell]) XLSX.utils.cell_set_number_format(worksheet[totalCell], '₹ #,##0.00');
+            }
+            const lastRowIndex = reportData.length + 1;
+            const grandTotalTextCell = XLSX.utils.encode_cell({c: priceColIndex, r: lastRowIndex});
+            const grandTotalValueCell = XLSX.utils.encode_cell({c: totalColIndex, r: lastRowIndex});
+            if(worksheet[grandTotalTextCell]) { worksheet[grandTotalTextCell].s = { font: { bold: true } }; }
+            if(worksheet[grandTotalValueCell]) {
+                worksheet[grandTotalValueCell].s = { font: { bold: true }, numFmt: '₹ #,##0.00' };
+            }
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Bill Report");
+            XLSX.writeFile(workbook, `Formatted_Bill_Report_${new Date().toISOString().split('T')[0]}.xlsx`);
+            showToast("Formatted Excel export with totals started!");
+        }
 
         function saveBills() { localStorage.setItem('anadiBills', JSON.stringify(bills)); } 
         function loadBills() { bills = JSON.parse(localStorage.getItem('anadiBills') || '[]'); } 
@@ -737,33 +603,56 @@
             const toast = document.createElement('div'); 
             toast.className = `toast ${type}`; 
             toast.textContent = message; 
-
             toast.style.animation = 'line-to-box-in 0.6s ease-out forwards'; 
             container.appendChild(toast); 
-
             setTimeout(() => { 
                 toast.style.animation = 'line-to-box-out 0.6s ease-in forwards'; 
-                setTimeout(() => { 
-                    toast.remove(); 
-                }, 600); 
+                setTimeout(() => { toast.remove(); }, 600); 
             }, 4400); 
         } 
 
-        function openDispatchModal() { 
-            document.getElementById('dispatchModal').style.display = 'block'; 
-            html5QrCode = new Html5Qrcode("qr-reader"); 
-            const successCallback = (decodedText) => { 
-                try { 
-                    const data = JSON.parse(decodedText); 
-                    if (data.billId) { markAsDispatched(data.billId); closeDispatchModal(); } 
-                } catch (e) { showToast("Invalid QR Code", "error"); } 
-            }; 
-            html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } }, successCallback) 
-            .catch(() => console.log("Camera start failed, user can enter code manually.")); 
-        } 
+        // UPDATED: Simplified and more robust scanner function
+        function openDispatchModal() {
+            // First, ensure any previous scanner is stopped before opening a new one.
+            if (html5QrCode && html5QrCode.isScanning) {
+                html5QrCode.stop().catch(err => console.error("Failed to stop previous scanner.", err));
+            }
+
+            document.getElementById('dispatchModal').style.display = 'block';
+            
+            html5QrCode = new Html5Qrcode("qr-reader");
+            
+            const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+                try {
+                    const data = JSON.parse(decodedText);
+                    if (data.billId) {
+                        markAsDispatched(data.billId);
+                        closeDispatchModal();
+                    } else {
+                        showToast("QR code does not contain a Bill ID.", "error");
+                    }
+                } catch (e) {
+                    showToast("Invalid QR Code format.", "error");
+                }
+            };
+
+            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+            // Start scanning.
+            html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback)
+                .catch((err) => {
+                    console.error("Could not start QR scanner", err);
+                    const qrReaderDiv = document.getElementById('qr-reader');
+                    qrReaderDiv.innerHTML = '<p style="color: red; font-weight: bold;">Could not start camera. Please make sure you are on a secure (https) connection and have granted camera permissions.</p>';
+                });
+        }
 
         function closeDispatchModal() { 
-            if (html5QrCode && html5QrCode.isScanning) html5QrCode.stop().catch(() => {}); 
+            if (html5QrCode && html5QrCode.isScanning) {
+                html5QrCode.stop().catch((err) => {
+                    console.error("Failed to stop QR code scanner.", err);
+                }); 
+            }
             document.getElementById('dispatchModal').style.display = 'none'; 
         } 
     </script>
