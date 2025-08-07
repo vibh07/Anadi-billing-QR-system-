@@ -125,7 +125,7 @@
         .bill-card { border-radius: var(--border-radius); margin-bottom: 1rem; box-shadow: var(--shadow); border-left: 5px solid; transition: all 0.3s ease; }
         .bill-card.pending { border-color: var(--danger-color); background-color: var(--danger-light); }
         .bill-card.dispatched { border-color: var(--success-color); background-color: var(--success-light); }
-        .bill-header { padding: 1rem 1.5rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; cursor: pointer; }
+        .bill-header { padding: 0rem 0.5rem; display: flex; flex-wrap: wrap; gap: 0rem; align-items: center; cursor: pointer;justify-content: flex-end; }
         .bill-header > div { flex: 1 1 150px; }
         .bill-header p { margin: 0; font-size: 0.9rem; }
         .bill-header p strong { font-size: 1.2rem; color: var(--primary-color); }
@@ -645,7 +645,7 @@
                     const qrReaderDiv = document.getElementById('qr-reader');
                     qrReaderDiv.innerHTML = '<p style="color: red; font-weight: bold;">Could not start camera. Please make sure you are on a secure (https) connection and have granted camera permissions.</p>';
                 });
-        }
+        } 
 
         function closeDispatchModal() { 
             if (html5QrCode && html5QrCode.isScanning) {
