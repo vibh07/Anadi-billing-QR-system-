@@ -423,12 +423,12 @@
         } 
         
         function preparePrintableArea(bill, qrDataUrl) { 
-            document.getElementById('print-cust-details').innerHTML = `<p><strong>Bill To:</strong> ${bill.customer.name}</p><p><strong>Address:</strong> ${bill.customer.house}</p><p><strong>Date:</strong> ${bill.date}</p><p><strong>Bill ID:</strong> ${bill.id}</p>`; 
-            const itemsTbody = bill.items.map(i => `<tr><td>${i.name}</td><td>${i.qty}</td><td>${i.total.toFixed(2)}</td></tr>`).join(''); 
-            document.getElementById('print-items-table').innerHTML = `<thead><tr><th>Item</th><th>Qty</th><th>Amt</th></tr></thead><tbody>${itemsTbody}</tbody>`; 
-            document.getElementById('print-total').innerText = `Total: ₹${bill.total.toFixed(2)}`; 
-            document.getElementById('print-qr-img').src = qrDataUrl; 
-        } 
+    document.getElementById('print-cust-details').innerHTML = `<p><strong>Bill To:</strong> ${bill.customer.name}</p><p><strong>Phone:</strong> ${bill.customer.phone}</p><p><strong>Address:</strong> ${bill.customer.house}</p><p><strong>Date:</strong> ${bill.date}</p><p><strong>Bill ID:</strong> ${bill.id}</p>`; 
+    const itemsTbody = bill.items.map(i => `<tr><td>${i.name}</td><td>${i.qty}</td><td>${i.total.toFixed(2)}</td></tr>`).join(''); 
+    document.getElementById('print-items-table').innerHTML = `<thead><tr><th>Item</th><th>Qty</th><th>Amt</th></tr></thead><tbody>${itemsTbody}</tbody>`; 
+    document.getElementById('print-total').innerText = `Total: ₹${bill.total.toFixed(2)}`; 
+    document.getElementById('print-qr-img').src = qrDataUrl; 
+}
 
         function renderHistory() { 
             const searchTerm = document.getElementById('historySearchInput').value.toLowerCase(); 
@@ -651,7 +651,7 @@
             if (html5QrCode && html5QrCode.isScanning) {
                 html5QrCode.stop().catch((err) => {
                     console.error("Failed to stop QR code scanner.", err);
-                }); 
+                });  
             }
             document.getElementById('dispatchModal').style.display = 'none'; 
         } 
