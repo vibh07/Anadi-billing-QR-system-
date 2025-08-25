@@ -738,6 +738,7 @@
         window.open(`https://wa.me/${formattedPhone}?text=${message}`, "_blank");
     }
     
+    // --- UPDATED FUNCTION FOR iOS COMPATIBILITY ---
     function exportFormattedExcel() {
         if (bills.length === 0) {
             showToast("No bills to export.", "error");
@@ -791,8 +792,29 @@
             worksheet[grandTotalValueCell].s = { font: { bold: true }, numFmt: '₹ #,##0.00' };
         }
         XLSX.utils.book_append_sheet(workbook, worksheet, "Bill Report");
-        XLSX.writeFile(workbook, `Formatted_Bill_Report_${new Date().toISOString().split('T')[0]}.xlsx`);
-        showToast("Formatted Excel export with totals started!");
+        
+        // --- NEW iOS-COMPATIBLE DOWNLOAD LOGIC ---
+        try {
+            const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob([excelBuffer], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'});
+            
+            const fileName = `Bill_Report_${new Date().toISOString().split('T')[0]}.xlsx`;
+
+            // This part is for iOS and other browsers
+            const url = window.URL.createObjectURL(data);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', fileName);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+
+            showToast("Excel export started!");
+        } catch(err) {
+            showToast("Could not export Excel file.", "error");
+            console.error("Excel Export Error:", err);
+        }
     }
 
     function saveBills() { localStorage.setItem('anadiBills', JSON.stringify(bills)); }
