@@ -503,6 +503,7 @@
     }
     
     // --- NEW FUNCTION TO SAVE BILL AS PDF ---
+    // --- UPDATED FUNCTION TO SAVE BILL AS PDF ---
     function saveAsPdf() {
         if (!currentBill) {
             showToast("No bill has been generated to save.", "error");
@@ -543,33 +544,40 @@
         doc.text('Bill To:', margin, y);
         doc.setFont('helvetica', 'normal');
         doc.text(currentBill.customer.name, margin + 0.6, y);
-        y += 0.2;
+        y += 0.2; // Consistent line height
+
         doc.setFont('helvetica', 'bold');
         doc.text('Phone:', margin, y);
         doc.setFont('helvetica', 'normal');
         doc.text(currentBill.customer.phone, margin + 0.6, y);
         y += 0.2;
+        
+        // --- FIX 1: Address and Bill ID Overlapping ---
         doc.setFont('helvetica', 'bold');
         doc.text('Address:', margin, y);
         doc.setFont('helvetica', 'normal');
-        doc.text(currentBill.customer.house, margin + 0.6, y, { maxWidth: contentWidth - 0.7 });
-        y += (doc.getTextDimensions(currentBill.customer.house, { maxWidth: contentWidth - 0.7 }).h * 0.0138) + 0.1;
-
+        // This code now handles multi-line addresses correctly
+        const addressLines = doc.splitTextToSize(currentBill.customer.house, contentWidth - 0.7);
+        doc.text(addressLines, margin + 0.6, y);
+        // Increase space based on the number of lines in the address
+        y += (addressLines.length * 0.18); 
+        y += 0.1; // Extra padding
 
         // --- Bill Info ---
         doc.setFont('helvetica', 'bold');
         doc.text(`Bill ID: ${currentBill.id}`, margin, y);
         doc.text(`Date: ${currentBill.date}`, pageWidth - margin, y, { align: 'right' });
-        y += 0.1;
+        y += 0.2;
         doc.line(margin, y, pageWidth - margin, y);
 
         // --- Items Table ---
-        const tableHead = [['Item', 'Qty', 'Price', 'Amount']];
+        // --- FIX 2 & 3: Misaligned Amount and Rupee Symbol ---
+        const tableHead = [['Item', 'Qty', 'Price (Rs)', 'Amount (Rs)']];
         const tableBody = currentBill.items.map(item => [
             item.name,
             item.qty,
-            `₹${item.price.toFixed(2)}`,
-            `₹${item.total.toFixed(2)}`
+            item.price.toFixed(2), // Symbol removed for correct alignment
+            item.total.toFixed(2)  // Symbol removed for correct alignment
         ]);
 
         doc.autoTable({
@@ -593,16 +601,16 @@
         y += 0.3;
         doc.setFontSize(14);
         doc.setFont('helvetica', 'bold');
-        const totalText = `Grand Total: ₹${currentBill.total.toFixed(2)}`;
+        const totalText = `Grand Total: Rs ${currentBill.total.toFixed(2)}`; // Using "Rs" for compatibility
         doc.text(totalText, pageWidth - margin, y, { align: 'right' });
 
         // --- QR Code & Footer ---
         const qrImgData = document.getElementById('print-qr-img').src;
         const qrSize = 1.2; 
         const qrX = (pageWidth - qrSize) / 2;
-        const qrY = pageHeight - margin - qrSize - 0.3; // Position from bottom
+        const qrY = pageHeight - margin - qrSize - 0.3; 
         
-        if (y < qrY) { // Only add QR and footer if there's enough space
+        if (y < qrY) {
              doc.addImage(qrImgData, 'PNG', qrX, qrY, qrSize, qrSize);
              doc.setFontSize(9);
              doc.setFont('helvetica', 'italic');
