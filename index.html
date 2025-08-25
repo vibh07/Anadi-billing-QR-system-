@@ -368,6 +368,9 @@
                      <input type="text" id="historySearchInput" placeholder="Search by Name, Phone, or Bill ID..." oninput="renderHistory()">
                      <button class="btn btn-primary" onclick="openDispatchModal()">Update Status</button>
                      <button class="btn btn-secondary" onclick="exportFormattedExcel()">Export to Excel</button>
+                      <button class="btn btn-danger" onclick="exportPdfReport()">Export to PDF</button>
+
+</div>
                 </div>
                 <div id="bill-history-container"></div>
             </div>
@@ -887,6 +890,123 @@ function exportFormattedExcel() {
         }
         document.getElementById('dispatchModal').style.display = 'none';
     }
+
+
+    /*
+* =========================================================================
+* NEW FUNCTION TO EXPORT ALL BILL DATA AS A PDF REPORT
+* This function is designed to be compatible with both standard browsers and iOS.
+* =========================================================================
+*/
+function exportPdfReport() {
+    if (bills.length === 0) {
+        showToast("No bills to export to PDF.", "error");
+        return;
+    }
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({
+        orientation: 'landscape', // Use landscape for more columns
+        unit: 'pt',
+        format: 'a4'
+    });
+
+    const headers = [[
+        "Sr.", "Customer Name", "Phone", "Address", "Product", "Qty", 
+        "Price", "Total", "Date", "Dispatch Status", "Payment Status"
+    ]];
+    const reportData = [];
+    let serialNumber = 1;
+    let grandTotal = 0;
+
+    // Prepare data rows, similar to the Excel export
+    bills.forEach(bill => {
+        bill.items.forEach(item => {
+            reportData.push([
+                serialNumber++,
+                bill.customer.name,
+                bill.customer.phone,
+                bill.customer.house,
+                item.name,
+                item.qty,
+                `Rs ${item.price.toFixed(2)}`,
+                `Rs ${item.total.toFixed(2)}`,
+                bill.date,
+                bill.status,
+                bill.paymentStatus
+            ]);
+            grandTotal += item.total;
+        });
+    });
+
+    // Add a title to the document
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    doc.text("Anadi Industries - Bill Report", 40, 40);
+
+    // Use autoTable to generate the main table from the data
+    doc.autoTable({
+        head: headers,
+        body: reportData,
+        startY: 60,
+        theme: 'grid',
+        styles: { 
+            fontSize: 7,
+            cellPadding: 4
+        },
+        headStyles: { 
+            fillColor: [44, 62, 80], // Dark blue header
+            textColor: 255, 
+            fontStyle: 'bold' 
+        },
+        columnStyles: {
+            0: { cellWidth: 30 }, // Sr. No.
+            5: { halign: 'right' }, // Qty
+            6: { halign: 'right' }, // Price
+            7: { halign: 'right' }, // Total
+        }
+    });
+
+    // Add the Grand Total after the table
+    let finalY = doc.autoTable.previous.finalY; // Get Y position of the last row
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text(
+        `Grand Total: Rs ${grandTotal.toFixed(2)}`, 
+        40, 
+        finalY + 30 // Position it below the table
+    );
+    
+    // --- iOS-COMPATIBLE DOWNLOAD LOGIC ---
+    try {
+        const pdfOutput = doc.output('blob');
+        const data = new Blob([pdfOutput], { type: 'application/pdf' });
+        const fileName = `Bill_Report_${new Date().toISOString().split('T')[0]}.pdf`;
+        
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+        if (isIOS) {
+            // For iOS, open the blob in a new window. Safari handles the download prompt.
+            const url = window.URL.createObjectURL(data);
+            window.open(url, '_blank');
+            showToast("Your PDF report is opening...", "success");
+        } else {
+            // For other browsers, create a link and trigger the download.
+            const url = window.URL.createObjectURL(data);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', fileName);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+            showToast("PDF export started!", "success");
+        }
+    } catch(err) {
+        showToast("Could not export PDF file.", "error");
+        console.error("PDF Export Error:", err);
+    }
+}
 </script>
 </body>
 </html>
