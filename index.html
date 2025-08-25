@@ -174,18 +174,89 @@
             .bill-header .bill-info-total { text-align: right; }
         }
         .print-only { display: none; }
-        @media print {
-            body > .no-print { display: none !important; }
-            .print-only { display: block !important; }
-            #printable-area { font-family: 'Courier New', Courier, monospace; color: #000; }
-            #print-content { width: 280px; margin: 0; }
-            #print-content h2, #print-content h3 { text-align: center; margin: 10px 0; font-size: 16px; font-weight: bold; }
-            #print-content p { margin: 5px 0; font-size: 12px; }
-            #print-content table { width: 100%; font-size: 12px; border-collapse: collapse; margin-top: 10px; }
-            #print-content table th, #print-content table td { padding: 4px; text-align: left; }
-            #print-content .center { text-align: center; }
-            #print-qr-img { max-width: 150px; margin: 10px auto; display: block; }
-        }
+       @media print {
+    /* Define the page size to 4x6 inches */
+    @page {
+        size: 4in 6in;
+        margin: 0.25in; /* आप अपनी ज़रूरत के हिसाब से मार्जिन बदल सकते हैं */
+    }
+
+    /* Hide everything that is not meant for printing */
+    body > .no-print { display: none !important; }
+    .print-only { display: block !important; }
+
+    /* Style the printable area to fit the 4x6 page */
+    #printable-area {
+        width: 100%;
+        height: 100%;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #000;
+    }
+    
+    #print-content {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #print-content h2 {
+        text-align: center;
+        margin: 10px 0 5px 0;
+        font-size: 16pt;
+        font-weight: bold;
+    }
+    
+     #print-content h3 {
+        text-align: right;
+        margin: 20px 0;
+        font-size: 18pt;
+        font-weight: bold;
+    }
+    
+    #print-content p {
+        margin: 4px 0;
+        font-size: 10pt;
+    }
+    
+    #print-cust-details {
+        margin-bottom: 15px;
+    }
+
+    #print-content table {
+        width: 100%;
+        font-size: 10pt;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+    
+    #print-content table th, #print-content table td {
+        padding: 6px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    #print-content table th {
+        font-weight: bold;
+        background-color: #f4f4f4;
+    }
+    
+    #print-total {
+        font-size: 16pt !important;
+    }
+    
+    #print-qr-img {
+        max-width: 130px; /* QR code का आकार */
+        margin: 20px auto 10px auto;
+        display: block;
+    }
+    
+    .center {
+        text-align: center;
+    }
+}
         #dispatchModal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.7); }
         .modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 90%; max-width: 500px; border-radius: 8px; text-align: center; }
         /* Simple style for the QR Reader div */
