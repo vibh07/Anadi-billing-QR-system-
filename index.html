@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anadi Billing System</title>
     <link rel="icon" type="image/x-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpSUECPfnUCAQ0A5l2QBVlZNzlAImCOHl0SA&s">
@@ -180,91 +180,74 @@
         }
         .print-only { display: none; }
         @media print {
-    /* Define the page size to 4x6 inches */
-    @page {
-        size: 4in 6in;
-        margin: 0.25in; /* आप अपनी ज़रूरत के हिसाब से मार्जिन बदल सकते हैं */
-    }
-
-    /* Hide everything that is not meant for printing */
-    body > .no-print { display: none !important; }
-    .print-only { display: block !important; }
-
-    /* Style the printable area to fit the 4x6 page */
-    #printable-area {
-        width: 100%;
-        height: 100%;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        color: #000;
-    }
-    
-    #print-content {
-        width: 100%;
-        height: 100%;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-    }
-
-    #print-content h2 {
-        text-align: center;
-        margin: 10px 0 5px 0;
-        font-size: 16pt;
-        font-weight: bold;
-    }
-    
-     #print-content h3 {
-        text-align: right;
-        margin: 20px 0;
-        font-size: 18pt;
-        font-weight: bold;
-    }
-    
-    #print-content p {
-        margin: 4px 0;
-        font-size: 10pt;
-    }
-    
-    #print-cust-details {
-        margin-bottom: 15px;
-    }
-
-    #print-content table {
-        width: 100%;
-        font-size: 10pt;
-        border-collapse: collapse;
-        margin-top: 15px;
-    }
-    
-    #print-content table th, #print-content table td {
-        padding: 6px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
-
-    #print-content table th {
-        font-weight: bold;
-        background-color: #f4f4f4;
-    }
-    
-    #print-total {
-        font-size: 16pt !important;
-    }
-    
-    #print-qr-img {
-        max-width: 130px; /* QR code का आकार */
-        margin: 20px auto 10px auto;
-        display: block;
-    }
-    
-    .center {
-        text-align: center;
-    }
-}
+            @page {
+                size: 4in 6in;
+                margin: 0.25in; 
+            }
+            body > .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            #printable-area {
+                width: 100%;
+                height: 100%;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                color: #000;
+            }
+            #print-content {
+                width: 100%;
+                height: 100%;
+                padding: 0;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+            }
+            #print-content h2 {
+                text-align: center;
+                margin: 10px 0 5px 0;
+                font-size: 16pt;
+                font-weight: bold;
+            }
+            #print-content h3 {
+                text-align: right;
+                margin: 20px 0;
+                font-size: 18pt;
+                font-weight: bold;
+            }
+            #print-content p {
+                margin: 4px 0;
+                font-size: 10pt;
+            }
+            #print-cust-details {
+                margin-bottom: 15px;
+            }
+            #print-content table {
+                width: 100%;
+                font-size: 10pt;
+                border-collapse: collapse;
+                margin-top: 15px;
+            }
+            #print-content table th, #print-content table td {
+                padding: 6px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+            #print-content table th {
+                font-weight: bold;
+                background-color: #f4f4f4;
+            }
+            #print-total {
+                font-size: 16pt !important;
+            }
+            #print-qr-img {
+                max-width: 130px; 
+                margin: 20px auto 10px auto;
+                display: block;
+            }
+            .center {
+                text-align: center;
+            }
+        }
         #dispatchModal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.7); }
         .modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 90%; max-width: 500px; border-radius: 8px; text-align: center; }
-        /* Simple style for the QR Reader div */
         #qr-reader {
             border: 2px dashed #ccc;
             margin-bottom: 1rem;
@@ -354,23 +337,21 @@
                     <button class="btn btn-success" onclick="generateBill()">Generate Bill & QR</button>
                 </div>
                <div id="qr-and-print-section" style="display: none;">
-    <h2 id="bill-id-display"></h2>
-    <div id="qrcode"></div>
-    <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem;">
-        <button class="btn btn-primary" onclick="window.print()">Print Bill</button>
-        <button class="btn btn-secondary" onclick="saveAsPdf()">Save as PDF</button>
-    </div>
-</div>
+                    <h2 id="bill-id-display"></h2>
+                    <div id="qrcode"></div>
+                    <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem;">
+                        <button class="btn btn-primary" onclick="window.print()">Print Bill</button>
+                        <button class="btn btn-secondary" onclick="saveAsPdf()">Export to PDF</button>
+                    </div>
+                </div>
             </div>
 
             <div id="history-tab" class="tab">
                 <div class="history-controls form-section">
                      <input type="text" id="historySearchInput" placeholder="Search by Name, Phone, or Bill ID..." oninput="renderHistory()">
                      <button class="btn btn-primary" onclick="openDispatchModal()">Update Status</button>
-                     <button class="btn btn-secondary" onclick="exportFormattedExcel()">Export to Excel</button>
+                     <!-- <button class="btn btn-secondary" onclick="exportFormattedExcel()">Export to Excel</button> -->
                       <button class="btn btn-danger" onclick="exportPdfReport()">Export to PDF</button>
-
-</div>
                 </div>
                 <div id="bill-history-container"></div>
             </div>
@@ -379,16 +360,16 @@
 
     <div id="printable-area" class="print-only">
         <div id="print-content">
-             <h2>Anadi Industries LLP</h2>
-             <p class="center"> Sohna Road Opp Haryana Gramin Bank Village Pali Faridabad Haryana 121004</p>
-             <hr>
-             <div id="print-cust-details"></div>
-             <hr>
-             <table id="print-items-table"></table>
-             <hr>
-             <h3 id="print-total"></h3>
-             <img id="print-qr-img" alt="QR Code">
-             <p class="center">Thank you for your visit!</p>
+              <h2>Anadi Industries LLP</h2>
+              <p class="center"> Ballabhgarh Sohna Road, Pali Village, Faridabad Haryana 121004</p>
+              <hr>
+              <div id="print-cust-details"></div>
+              <hr>
+              <table id="print-items-table"></table>
+              <hr>
+              <h3 id="print-total"></h3>
+              <img id="print-qr-img" alt="QR Code">
+              <p class="center">Thank you for your visit!</p>
         </div>
     </div>
     
@@ -407,7 +388,7 @@
     <div id="toastContainer" class="no-print"></div>
 
    <script>
-    let cart = [], bills = [], html5QrCode, currentBill = null; // Added currentBill variable
+    let cart = [], bills = [], html5QrCode, currentBill = null;
     const whatsappIcon = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.75,13.96C17.08,14.39 17.21,15.04 17.04,15.54C16.87,16.03 16.46,16.35 15.98,16.5C15.5,16.65 14.88,16.63 14.24,16.39C13.6,16.15 12.38,15.61 11.23,14.45C9.88,13.1 9.05,11.56 8.84,10.93C8.64,10.3 8.8,9.7 9.09,9.29C9.33,8.95 9.68,8.76 10,8.76C10.33,8.76 10.5,8.76 10.63,8.76C10.85,8.76 11.03,8.81 11.21,9.23L11.75,10.5C11.9,10.88 11.91,11.21 11.8,11.48C11.68,11.75 11.53,11.9 11.28,12.15C11.04,12.4 10.9,12.54 10.76,12.68C10.63,12.82 10.48,13.01 10.75,13.28C11.02,13.55 11.63,14.15 12.28,14.81C13.11,15.63 13.75,15.94 14.05,16.09C14.35,16.24 14.58,16.21 14.78,16.03L15.3,15.5C15.68,15.13 16.11,15 16.5,15.03C16.88,15.06 17.63,15.33 17.63,15.33L18.03,13.93C17.76,13.81 17.26,13.55 16.75,13.96M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22C13.66,22 15.25,21.54 16.65,20.73L21.35,22.14L20.06,17.5C21.06,16 21.75,14.11 21.94,12.1C22,11.95 22,11.97 22,12A10,10 0 0,0 12,2Z"/></svg>`;
 
     document.addEventListener('DOMContentLoaded', () => loadBills());
@@ -432,8 +413,8 @@
 
     function addItemToCart() {
         const name = document.getElementById('product-name').value.trim(),
-            qty = parseFloat(document.getElementById('product-qty').value),
-            price = parseFloat(document.getElementById('product-price').value);
+              qty = parseFloat(document.getElementById('product-qty').value),
+              price = parseFloat(document.getElementById('product-price').value);
         if (!name || isNaN(qty) || isNaN(price) || qty <= 0 || price < 0) return showToast("Please fill all product fields correctly", "error");
         cart.push({ name, qty, price, total: qty * price });
         updateCartTable();
@@ -469,8 +450,8 @@
 
     async function generateBill() {
         const custName = document.getElementById('cust-name').value.trim(),
-            custPhone = document.getElementById('cust-phone').value.trim(),
-            custHouse = document.getElementById('cust-house').value.trim();
+              custPhone = document.getElementById('cust-phone').value.trim(),
+              custHouse = document.getElementById('cust-house').value.trim();
         if (!custName || !custPhone || !custHouse) return showToast("Please fill customer details", "error");
         if (cart.length === 0) return showToast("Cart is empty", "error");
 
@@ -484,7 +465,7 @@
             paymentStatus: 'unpaid'
         };
         
-        currentBill = bill; // Store the generated bill for PDF creation
+        currentBill = bill;
         bills.unshift(bill);
         saveBills();
         
@@ -505,131 +486,161 @@
         ['cust-name', 'cust-phone', 'cust-house'].forEach(id => document.getElementById(id).value = '');
     }
     
-    // --- NEW FUNCTION TO SAVE BILL AS PDF ---
-    // --- UPDATED FUNCTION TO SAVE BILL AS PDF ---
+    // =========================================================================
+    // MODIFIED FUNCTION: saveAsPdf()
+    // This function now uses the same robust, iOS-compatible download logic
+    // as the exportPdfReport() function.
+    // =========================================================================
+    // =========================================================================
+    // MODIFIED FUNCTION: saveAsPdf()
+    // The line adding the corrupted logo has been removed to fix the PDF export error.
+    // =========================================================================
     function saveAsPdf() {
-    if (!currentBill) {
-        showToast("No bill has been generated to save.", "error");
-        return;
+        if (!currentBill) {
+            showToast("No bill has been generated to save.", "error");
+            return;
+        }
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({
+            orientation: 'portrait',
+            unit: 'in',
+            format: [4, 6]
+        });
+
+        // This Base64 string was causing the error. It is no longer used in this function.
+        // const anadiFarmsLogo = '...'; 
+
+        const margin = 0.25;
+        const pageWidth = 4;
+        const pageHeight = 6;
+        const contentWidth = pageWidth - (margin * 2);
+        let y = margin;
+
+        // The following lines for adding the logo have been removed.
+        // const logoWidth = 1.2;
+        // const logoHeight = 0.9;
+        // const logoX = (pageWidth - logoWidth) / 2;
+        // doc.addImage(anadiFarmsLogo, 'PNG', logoX, y, logoWidth, logoHeight);
+        // y += logoHeight + 0.15;
+
+        // Header starts here
+        doc.setFontSize(16);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Anadi Industries LLP', pageWidth / 2, y, { align: 'center' });
+        y += 0.2;
+        doc.setFontSize(8);
+        doc.setFont('helvetica', 'normal');
+        const address = 'Ballabhgarh Sohna Road, Pali Village, Faridabad Haryana 121004';
+        doc.text(address, pageWidth / 2, y, { align: 'center', maxWidth: contentWidth });
+        y += 0.25;
+        doc.setLineWidth(0.01);
+        doc.line(margin, y, pageWidth - margin, y);
+        y += 0.2;
+
+        // Customer Details
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Bill To:', margin, y);
+        doc.setFont('helvetica', 'normal');
+        doc.text(currentBill.customer.name, margin + 0.6, y);
+        y += 0.2;
+
+        doc.setFont('helvetica', 'bold');
+        doc.text('Phone:', margin, y);
+        doc.setFont('helvetica', 'normal');
+        doc.text(currentBill.customer.phone, margin + 0.6, y);
+        y += 0.2;
+        
+        doc.setFont('helvetica', 'bold');
+        doc.text('Address:', margin, y);
+        doc.setFont('helvetica', 'normal');
+        const addressLines = doc.splitTextToSize(currentBill.customer.house, contentWidth - 0.7);
+        doc.text(addressLines, margin + 0.6, y);
+        y += (addressLines.length * 0.18); 
+        y += 0.1;
+
+        // Bill Info
+        doc.setFont('helvetica', 'bold');
+        doc.text(`Bill ID: ${currentBill.id}`, margin, y);
+        doc.text(`Date: ${currentBill.date}`, pageWidth - margin, y, { align: 'right' });
+        y += 0.2;
+        doc.line(margin, y, pageWidth - margin, y);
+
+        // Items Table
+        const tableHead = [['Item', 'Qty', 'Price (Rs)', 'Amount (Rs)']];
+        const tableBody = currentBill.items.map(item => [
+            item.name,
+            item.qty,
+            item.price.toFixed(2),
+            item.total.toFixed(2)
+        ]);
+
+        doc.autoTable({
+            head: tableHead,
+            body: tableBody,
+            startY: y + 0.1,
+            theme: 'striped',
+            headStyles: { fillColor: [240, 240, 240], textColor: 20, fontStyle: 'bold' },
+            styles: { fontSize: 9, cellPadding: 0.07 },
+            columnStyles: {
+                1: { halign: 'centre' },
+                2: { halign: 'centre' },
+                3: { halign: 'centre' },
+            },
+            margin: { left: margin, right: margin }
+        });
+        
+        y = doc.autoTable.previous.finalY;
+
+        // Total
+        y += 0.3;
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        const totalText = `Grand Total: Rs ${currentBill.total.toFixed(2)}`;
+        doc.text(totalText, pageWidth - margin, y, { align: 'right' });
+
+        // QR Code & Footer
+        const qrImgData = document.getElementById('print-qr-img').src;
+        const qrSize = 1.2; 
+        const qrX = (pageWidth - qrSize) / 2;
+        const qrY = pageHeight - margin - qrSize - 0.3; 
+        
+        if (y < qrY) {
+             doc.addImage(qrImgData, 'PNG', qrX, qrY, qrSize, qrSize);
+             doc.setFontSize(9);
+             doc.setFont('helvetica', 'italic');
+             doc.text('Thank you for your visit!', pageWidth / 2, pageHeight - margin - 0.1, { align: 'center' });
+        }
+
+        // iOS-COMPATIBLE DOWNLOAD LOGIC
+        try {
+            const pdfOutput = doc.output('blob');
+            const data = new Blob([pdfOutput], { type: 'application/pdf' });
+            const fileName = `bill-${currentBill.id}.pdf`;
+            
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+            if (isIOS) {
+                const url = window.URL.createObjectURL(data);
+                window.open(url, '_blank');
+                showToast("Your PDF is opening...", "success");
+            } else {
+                const url = window.URL.createObjectURL(data);
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', fileName);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+                showToast("PDF export started!", "success");
+            }
+        } catch(err) {
+            showToast("Could not export PDF file.", "error");
+            console.error("PDF Export Error:", err);
+        }
     }
-
-    const { jsPDF } = window.jspdf;
-    // Initialize PDF for 4x6 inch paper
-    const doc = new jsPDF({
-        orientation: 'portrait',
-        unit: 'in',
-        format: [4, 6]
-    });
-
-    // This is your image converted into a format that the PDF generator can use.
-    const anadiFarmsLogo = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANoAAADaAQMAAADLoLp0AAAABlBMVEUAAAAAAAClZ7nPAAAAAXRSTlMAQObYZgAAAZ5JREFUeNrt2rFNAzEQBVBnBCMwAkoHy3YJSAkHwCE4AAkH4EhghQEE6kLqgGDbG3Je5MHnP/5L03N1gQIAAAAAAAAAAAAAAADcpTf5P+vjQ1032L/kS/51G+tDVTcYx278W34vH2K5T0eXy1cZ9t+xsX/osKqjV2WpP20/rqvptNrq/p2I5ePzbqxuX43N/02t9e2R1sH78fXwWl/bE/tJb+M9+l4/bE/tFz5sP/BZe7a/pLd2N/oK72w/6S29xvYDP7af9LbeQ3v1fWw/6S29jf7wW+2H/SW3t/2gT/xj+0l5xPfsR/xlp7N+yH/GWns36w97Z/pLzmd/gD3tn+0t+Z/eAffWf7S35na1P/GVns/5r/2B/qS39z/sV/xlp7P+a/9gf6kt/c/7Ff8ZaeTfuw/eC39gP+ktvYf/BZ+wH/SW3uV/gD/dl+0lvuN/iD3toP+kt+Y/sBf/Zs/0l+AyMAAAAAAAAAAAAAAACAv30BDhW6A7Ucl6UAAAAASUVORKCYII=';
-
-    const margin = 0.25;
-    const pageWidth = 4;
-    const pageHeight = 6;
-    const contentWidth = pageWidth - (margin * 2);
-    let y = margin;
-
-    // Add Logo to the top center
-    const logoWidth = 1.2;
-    const logoHeight = 0.9;
-    const logoX = (pageWidth - logoWidth) / 2; // Calculation to center the logo
-    doc.addImage(anadiFarmsLogo, 'PNG', logoX, y, logoWidth, logoHeight);
-    y += logoHeight + 0.15; // Move down after the logo
-
-    // Header (now starts below the logo)
-    doc.setFontSize(16);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Anadi Industries LLP', pageWidth / 2, y, { align: 'center' });
-    y += 0.2;
-    doc.setFontSize(8);
-    doc.setFont('helvetica', 'normal');
-    const address = 'Sohna Road Opp Haryana Gramin Bank Village Pali Faridabad Haryana 121004';
-    doc.text(address, pageWidth / 2, y, { align: 'center', maxWidth: contentWidth });
-    y += 0.25;
-    doc.setLineWidth(0.01);
-    doc.line(margin, y, pageWidth - margin, y);
-    y += 0.2;
-
-    // Customer Details
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Bill To:', margin, y);
-    doc.setFont('helvetica', 'normal');
-    doc.text(currentBill.customer.name, margin + 0.6, y);
-    y += 0.2;
-
-    doc.setFont('helvetica', 'bold');
-    doc.text('Phone:', margin, y);
-    doc.setFont('helvetica', 'normal');
-    doc.text(currentBill.customer.phone, margin + 0.6, y);
-    y += 0.2;
-    
-    doc.setFont('helvetica', 'bold');
-    doc.text('Address:', margin, y);
-    doc.setFont('helvetica', 'normal');
-    const addressLines = doc.splitTextToSize(currentBill.customer.house, contentWidth - 0.7);
-    doc.text(addressLines, margin + 0.6, y);
-    y += (addressLines.length * 0.18); 
-    y += 0.1;
-
-    // Bill Info
-    doc.setFont('helvetica', 'bold');
-    doc.text(`Bill ID: ${currentBill.id}`, margin, y);
-    doc.text(`Date: ${currentBill.date}`, pageWidth - margin, y, { align: 'right' });
-    y += 0.2;
-    doc.line(margin, y, pageWidth - margin, y);
-
-    // Items Table
-    const tableHead = [['Item', 'Qty', 'Price (Rs)', 'Amount (Rs)']];
-    const tableBody = currentBill.items.map(item => [
-        item.name,
-        item.qty,
-        item.price.toFixed(2),
-        item.total.toFixed(2)
-    ]);
-
-    doc.autoTable({
-        head: tableHead,
-        body: tableBody,
-        startY: y + 0.1,
-        theme: 'grid',
-        headStyles: { fillColor: [240, 240, 240], textColor: 20, fontStyle: 'bold' },
-        styles: { fontSize: 9, cellPadding: 0.05 },
-        columnStyles: {
-            1: { halign: 'right' },
-            2: { halign: 'right' },
-            3: { halign: 'right' },
-        },
-        margin: { left: margin, right: margin }
-    });
-    
-    y = doc.autoTable.previous.finalY;
-
-    // Total
-    y += 0.3;
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'bold');
-    const totalText = `Grand Total: Rs ${currentBill.total.toFixed(2)}`;
-    doc.text(totalText, pageWidth - margin, y, { align: 'right' });
-
-    // QR Code & Footer
-    const qrImgData = document.getElementById('print-qr-img').src;
-    const qrSize = 1.2; 
-    const qrX = (pageWidth - qrSize) / 2;
-    const qrY = pageHeight - margin - qrSize - 0.3; 
-    
-    if (y < qrY) {
-         doc.addImage(qrImgData, 'PNG', qrX, qrY, qrSize, qrSize);
-         doc.setFontSize(9);
-         doc.setFont('helvetica', 'italic');
-         doc.text('Thank you for your visit!', pageWidth / 2, pageHeight - margin - 0.1, { align: 'center' });
-    }
-
-    // Save the PDF
-    doc.save(`bill-${currentBill.id}.pdf`);
-    showToast("PDF saved successfully!", "success");
-}
     function preparePrintableArea(bill, qrDataUrl) {
         document.getElementById('print-cust-details').innerHTML = `<p><strong>Bill To:</strong> ${bill.customer.name}</p><p><strong>Phone:</strong> ${bill.customer.phone}</p><p><strong>Address:</strong> ${bill.customer.house}</p><p><strong>Date:</strong> ${bill.date}</p><p><strong>Bill ID:</strong> ${bill.id}</p>`;
         const itemsTbody = bill.items.map(i => `<tr><td>${i.name}</td><td>${i.qty}</td><td>${i.total.toFixed(2)}</td></tr>`).join('');
@@ -746,93 +757,86 @@
         window.open(`https://wa.me/${formattedPhone}?text=${message}`, "_blank");
     }
     
-    // --- UPDATED FUNCTION FOR iOS COMPATIBILITY ---
-    // --- UPDATED FUNCTION WITH FINAL iOS FIX ---
-function exportFormattedExcel() {
-    if (bills.length === 0) {
-        showToast("No bills to export.", "error");
-        return;
-    }
-    let serialNumber = 1, grandTotal = 0;
-    const headers = [
-        "Sr. No.", "Customer Name", "Phone Number", "Address", "Product Name",
-        "Quantity", "Price per Item", "Total Price", "Date", "Dispatch Status", "Payment Status"
-    ];
-    const reportData = [];
-    bills.forEach(bill => {
-        bill.items.forEach(item => {
-            reportData.push({
-                "Sr. No.": serialNumber++, "Customer Name": bill.customer.name,
-                "Phone Number": bill.customer.phone, "Address": bill.customer.house,
-                "Product Name": item.name, "Quantity": item.qty,
-                "Price per Item": item.price, "Total Price": item.total,
-                "Date": bill.date, "Dispatch Status": bill.status,
-                "Payment Status": bill.paymentStatus
-            });
-            grandTotal += item.total;
-        });
-    });
-    const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.json_to_sheet(reportData, { header: headers });
-    const totalRow = { "Price per Item": "Grand Total", "Total Price": grandTotal };
-    XLSX.utils.sheet_add_json(worksheet, [totalRow], { skipHeader: true, origin: -1 });
-    const columnWidths = headers.map(header => {
-        const headerLength = header ? header.length : 10;
-        const dataRows = reportData.map(row => String(row[header] || "").length);
-        return { wch: Math.max(headerLength, ...dataRows) + 2 };
-    });
-    if (columnWidths[6].wch < "Grand Total".length + 2) { columnWidths[6].wch = "Grand Total".length + 2; }
-    worksheet['!cols'] = columnWidths;
-    const range = XLSX.utils.decode_range(worksheet['!ref']);
-    worksheet['!autofilter'] = { ref: XLSX.utils.encode_range(range) };
-    const priceColIndex = headers.indexOf("Price per Item");
-    const totalColIndex = headers.indexOf("Total Price");
-    for (let i = 0; i < reportData.length; i++) {
-        const priceCell = XLSX.utils.encode_cell({c: priceColIndex, r: i + 1});
-        const totalCell = XLSX.utils.encode_cell({c: totalColIndex, r: i + 1});
-        if(worksheet[priceCell]) XLSX.utils.cell_set_number_format(worksheet[priceCell], '₹ #,##0.00');
-        if(worksheet[totalCell]) XLSX.utils.cell_set_number_format(worksheet[totalCell], '₹ #,##0.00');
-    }
-    const lastRowIndex = reportData.length + 1;
-    const grandTotalTextCell = XLSX.utils.encode_cell({c: priceColIndex, r: lastRowIndex});
-    const grandTotalValueCell = XLSX.utils.encode_cell({c: totalColIndex, r: lastRowIndex});
-    if(worksheet[grandTotalTextCell]) { worksheet[grandTotalTextCell].s = { font: { bold: true } }; }
-    if(worksheet[grandTotalValueCell]) {
-        worksheet[grandTotalValueCell].s = { font: { bold: true }, numFmt: '₹ #,##0.00' };
-    }
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Bill Report");
-    
-    // --- FINAL iOS-COMPATIBLE DOWNLOAD LOGIC ---
-    try {
-        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-        const data = new Blob([excelBuffer], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'});
-        const fileName = `Bill_Report_${new Date().toISOString().split('T')[0]}.xlsx`;
-
-        // Check if the user is on an iOS device
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
-        if (isIOS) {
-            // For iOS, we open the file in a new tab. Safari will then prompt the user to download it.
-            const url = window.URL.createObjectURL(data);
-            window.open(url, '_blank');
-            showToast("Your report is opening...", "success");
-        } else {
-            // This part is for Android and other browsers
-            const url = window.URL.createObjectURL(data);
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', fileName);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
-            showToast("Excel export started!", "success");
+    function exportFormattedExcel() {
+        if (bills.length === 0) {
+            showToast("No bills to export.", "error");
+            return;
         }
-    } catch(err) {
-        showToast("Could not export Excel file.", "error");
-        console.error("Excel Export Error:", err);
+        let serialNumber = 1, grandTotal = 0;
+        const headers = [
+            "Sr. No.", "Customer Name", "Phone Number", "Address", "Product Name",
+            "Quantity", "Price per Item", "Total Price", "Date", "Dispatch Status", "Payment Status"
+        ];
+        const reportData = [];
+        bills.forEach(bill => {
+            bill.items.forEach(item => {
+                reportData.push({
+                    "Sr. No.": serialNumber++, "Customer Name": bill.customer.name,
+                    "Phone Number": bill.customer.phone, "Address": bill.customer.house,
+                    "Product Name": item.name, "Quantity": item.qty,
+                    "Price per Item": item.price, "Total Price": item.total,
+                    "Date": bill.date, "Dispatch Status": bill.status,
+                    "Payment Status": bill.paymentStatus
+                });
+                grandTotal += item.total;
+            });
+        });
+        const workbook = XLSX.utils.book_new();
+        const worksheet = XLSX.utils.json_to_sheet(reportData, { header: headers });
+        const totalRow = { "Price per Item": "Grand Total", "Total Price": grandTotal };
+        XLSX.utils.sheet_add_json(worksheet, [totalRow], { skipHeader: true, origin: -1 });
+        const columnWidths = headers.map(header => {
+            const headerLength = header ? header.length : 10;
+            const dataRows = reportData.map(row => String(row[header] || "").length);
+            return { wch: Math.max(headerLength, ...dataRows) + 2 };
+        });
+        if (columnWidths[6].wch < "Grand Total".length + 2) { columnWidths[6].wch = "Grand Total".length + 2; }
+        worksheet['!cols'] = columnWidths;
+        const range = XLSX.utils.decode_range(worksheet['!ref']);
+        worksheet['!autofilter'] = { ref: XLSX.utils.encode_range(range) };
+        const priceColIndex = headers.indexOf("Price per Item");
+        const totalColIndex = headers.indexOf("Total Price");
+        for (let i = 0; i < reportData.length; i++) {
+            const priceCell = XLSX.utils.encode_cell({c: priceColIndex, r: i + 1});
+            const totalCell = XLSX.utils.encode_cell({c: totalColIndex, r: i + 1});
+            if(worksheet[priceCell]) XLSX.utils.cell_set_number_format(worksheet[priceCell], '₹ #,##0.00');
+            if(worksheet[totalCell]) XLSX.utils.cell_set_number_format(worksheet[totalCell], '₹ #,##0.00');
+        }
+        const lastRowIndex = reportData.length + 1;
+        const grandTotalTextCell = XLSX.utils.encode_cell({c: priceColIndex, r: lastRowIndex});
+        const grandTotalValueCell = XLSX.utils.encode_cell({c: totalColIndex, r: lastRowIndex});
+        if(worksheet[grandTotalTextCell]) { worksheet[grandTotalTextCell].s = { font: { bold: true } }; }
+        if(worksheet[grandTotalValueCell]) {
+            worksheet[grandTotalValueCell].s = { font: { bold: true }, numFmt: '₹ #,##0.00' };
+        }
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Bill Report");
+        
+        try {
+            const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+            const data = new Blob([excelBuffer], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'});
+            const fileName = `Bill_Report_${new Date().toISOString().split('T')[0]}.xlsx`;
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            if (isIOS) {
+                const url = window.URL.createObjectURL(data);
+                window.open(url, '_blank');
+                showToast("Your report is opening...", "success");
+            } else {
+                const url = window.URL.createObjectURL(data);
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', fileName);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+                showToast("Excel export started!", "success");
+            }
+        } catch(err) {
+            showToast("Could not export Excel file.", "error");
+            console.error("Excel Export Error:", err);
+        }
     }
-}
+
     function saveBills() { localStorage.setItem('anadiBills', JSON.stringify(bills)); }
     function loadBills() { bills = JSON.parse(localStorage.getItem('anadiBills') || '[]'); }
     
@@ -853,7 +857,6 @@ function exportFormattedExcel() {
         if (html5QrCode && html5QrCode.isScanning) {
             html5QrCode.stop().catch(err => console.error("Failed to stop previous scanner.", err));
         }
-
         document.getElementById('dispatchModal').style.display = 'block';
         
         html5QrCode = new Html5Qrcode("qr-reader");
@@ -891,122 +894,108 @@ function exportFormattedExcel() {
         document.getElementById('dispatchModal').style.display = 'none';
     }
 
+    function exportPdfReport() {
+        if (bills.length === 0) {
+            showToast("No bills to export to PDF.", "error");
+            return;
+        }
 
-    /*
-* =========================================================================
-* NEW FUNCTION TO EXPORT ALL BILL DATA AS A PDF REPORT
-* This function is designed to be compatible with both standard browsers and iOS.
-* =========================================================================
-*/
-function exportPdfReport() {
-    if (bills.length === 0) {
-        showToast("No bills to export to PDF.", "error");
-        return;
-    }
-
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({
-        orientation: 'landscape', // Use landscape for more columns
-        unit: 'pt',
-        format: 'a4'
-    });
-
-    const headers = [[
-        "Sr.", "Customer Name", "Phone", "Address", "Product", "Qty", 
-        "Price", "Total", "Date", "Dispatch Status", "Payment Status"
-    ]];
-    const reportData = [];
-    let serialNumber = 1;
-    let grandTotal = 0;
-
-    // Prepare data rows, similar to the Excel export
-    bills.forEach(bill => {
-        bill.items.forEach(item => {
-            reportData.push([
-                serialNumber++,
-                bill.customer.name,
-                bill.customer.phone,
-                bill.customer.house,
-                item.name,
-                item.qty,
-                `Rs ${item.price.toFixed(2)}`,
-                `Rs ${item.total.toFixed(2)}`,
-                bill.date,
-                bill.status,
-                bill.paymentStatus
-            ]);
-            grandTotal += item.total;
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({
+            orientation: 'landscape',
+            unit: 'pt',
+            format: 'a4'
         });
-    });
 
-    // Add a title to the document
-    doc.setFontSize(18);
-    doc.setFont('helvetica', 'bold');
-    doc.text("Anadi Industries - Bill Report", 40, 40);
+        const headers = [[
+            "Sr.", "Customer Name", "Phone", "Address", "Product", "Qty", 
+            "Price", "Total", "Date", "Dispatch Status", "Payment Status"
+        ]];
+        const reportData = [];
+        let serialNumber = 1;
+        let grandTotal = 0;
 
-    // Use autoTable to generate the main table from the data
-    doc.autoTable({
-        head: headers,
-        body: reportData,
-        startY: 60,
-        theme: 'grid',
-        styles: { 
-            fontSize: 7,
-            cellPadding: 4
-        },
-        headStyles: { 
-            fillColor: [44, 62, 80], // Dark blue header
-            textColor: 255, 
-            fontStyle: 'bold' 
-        },
-        columnStyles: {
-            0: { cellWidth: 30 }, // Sr. No.
-            5: { halign: 'right' }, // Qty
-            6: { halign: 'right' }, // Price
-            7: { halign: 'right' }, // Total
-        }
-    });
+        bills.forEach(bill => {
+            bill.items.forEach(item => {
+                reportData.push([
+                    serialNumber++,
+                    bill.customer.name,
+                    bill.customer.phone,
+                    bill.customer.house,
+                    item.name,
+                    item.qty,
+                    `Rs ${item.price.toFixed(2)}`,
+                    `Rs ${item.total.toFixed(2)}`,
+                    bill.date,
+                    bill.status,
+                    bill.paymentStatus
+                ]);
+                grandTotal += item.total;
+            });
+        });
 
-    // Add the Grand Total after the table
-    let finalY = doc.autoTable.previous.finalY; // Get Y position of the last row
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'bold');
-    doc.text(
-        `Grand Total: Rs ${grandTotal.toFixed(2)}`, 
-        40, 
-        finalY + 30 // Position it below the table
-    );
-    
-    // --- iOS-COMPATIBLE DOWNLOAD LOGIC ---
-    try {
-        const pdfOutput = doc.output('blob');
-        const data = new Blob([pdfOutput], { type: 'application/pdf' });
-        const fileName = `Bill_Report_${new Date().toISOString().split('T')[0]}.pdf`;
+        doc.setFontSize(18);
+        doc.setFont('helvetica', 'bold');
+        doc.text("Anadi Industries - Bill Report", 40, 40);
+
+        doc.autoTable({
+            head: headers,
+            body: reportData,
+            startY: 60,
+            theme: 'grid',
+            styles: { 
+                fontSize: 7,
+                cellPadding: 4
+            },
+            headStyles: { 
+                fillColor: [44, 62, 80],
+                textColor: 255, 
+                fontStyle: 'bold' 
+            },
+            columnStyles: {
+                0: { cellWidth: 30 },
+                5: { halign: 'right' },
+                6: { halign: 'right' },
+                7: { halign: 'right' },
+            }
+        });
+
+        let finalY = doc.autoTable.previous.finalY;
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
+        doc.text(
+            `Grand Total: Rs ${grandTotal.toFixed(2)}`, 
+            40, 
+            finalY + 30
+        );
         
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        try {
+            const pdfOutput = doc.output('blob');
+            const data = new Blob([pdfOutput], { type: 'application/pdf' });
+            const fileName = `Bill_Report_${new Date().toISOString().split('T')[0]}.pdf`;
+            
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
-        if (isIOS) {
-            // For iOS, open the blob in a new window. Safari handles the download prompt.
-            const url = window.URL.createObjectURL(data);
-            window.open(url, '_blank');
-            showToast("Your PDF report is opening...", "success");
-        } else {
-            // For other browsers, create a link and trigger the download.
-            const url = window.URL.createObjectURL(data);
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', fileName);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
-            showToast("PDF export started!", "success");
+            if (isIOS) {
+                const url = window.URL.createObjectURL(data);
+                window.open(url, '_blank');
+                showToast("Your PDF report is opening...", "success");
+            } else {
+                const url = window.URL.createObjectURL(data);
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', fileName);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+                showToast("PDF export started!", "success");
+            }
+        } catch(err) {
+            showToast("Could not export PDF file.", "error");
+            console.error("PDF Export Error:", err);
         }
-    } catch(err) {
-        showToast("Could not export PDF file.", "error");
-        console.error("PDF Export Error:", err);
     }
-}
-</script>
+   </script>
 </body>
 </html>
