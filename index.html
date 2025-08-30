@@ -476,6 +476,54 @@
         height: 16px;
     }
 }
+    /* Add this new CSS block at the very end of your <style> tag */
+@media (max-width: 576px) {
+    /* Fix for Bill Summary Modal on Mobile */
+    .summary-card-header {
+        padding: 0.75rem;
+        gap: 0.75rem;
+        flex-wrap: nowrap; /* Ensure items stay on a single line */
+    }
+
+    .summary-info {
+        min-width: 0; /* VERY IMPORTANT: Allows the name/phone section to shrink */
+        flex-shrink: 1; /* Allow it to shrink if needed */
+        margin-right: 0.5rem;
+    }
+
+    .summary-info strong, .summary-info p {
+        white-space: nowrap;      /* Prevent text from wrapping */
+        overflow: hidden;         /* Hide the overflowing text */
+        text-overflow: ellipsis;  /* Add '...' when text is cut */
+        display: block;
+    }
+
+    .summary-total-section {
+        margin-left: auto; /* Pushes the total to the far right */
+        text-align: right;
+        flex-shrink: 0; /* Prevent the total from shrinking */
+    }
+
+    .summary-total-section p {
+        /* Hide the "Total Purchase" text on mobile to save space */
+        display: none;
+    }
+
+    .summary-total-section .total-amount {
+        font-size: 1.1rem; /* Make the total amount slightly smaller */
+    }
+
+    .summary-actions {
+        margin-left: 0.5rem;
+    }
+
+    /* Hide the expand arrow button on mobile to save space */
+    .summary-actions .expand-btn {
+        display: none;
+    }
+}
+
+        
     </style>
 </head>
 <body>
