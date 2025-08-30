@@ -477,52 +477,122 @@
     }
 }
     /* Add this new CSS block at the very end of your <style> tag */
-@media (max-width: 576px) {
-    /* Fix for Bill Summary Modal on Mobile */
+/* REPLACE your entire old media query block with this new, corrected one */
+@media (max-width: 767px) {
+    .container {
+        padding: 1rem;
+    }
+
+    /*******************************************/
+    /* FIX FOR: Bill Summary Modal Layout */
+    /*******************************************/
     .summary-card-header {
-        padding: 0.75rem;
-        gap: 0.75rem;
-        flex-wrap: nowrap; /* Ensure items stay on a single line */
+        display: flex;
+        flex-wrap: wrap; /* Key Change: Allows content to wrap to a new line */
+        align-items: center;
+        padding: 0.75rem 1rem;
+        row-gap: 0.5rem; /* Adds space between the top and bottom rows */
     }
 
+    /* --- Row 1: Icon and Customer Info --- */
+    .summary-user-icon {
+        flex-shrink: 0;
+    }
     .summary-info {
-        min-width: 0; /* VERY IMPORTANT: Allows the name/phone section to shrink */
-        flex-shrink: 1; /* Allow it to shrink if needed */
-        margin-right: 0.5rem;
+        flex-grow: 1; /* Takes the remaining space on the first line */
+        padding-left: 0.75rem;
+        min-width: 0; /* Allows text to be truncated if it's too long */
     }
-
     .summary-info strong, .summary-info p {
-        white-space: nowrap;      /* Prevent text from wrapping */
-        overflow: hidden;         /* Hide the overflowing text */
-        text-overflow: ellipsis;  /* Add '...' when text is cut */
-        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
+    /* --- Row 2: Total Amount and Action Buttons --- */
     .summary-total-section {
-        margin-left: auto; /* Pushes the total to the far right */
-        text-align: right;
-        flex-shrink: 0; /* Prevent the total from shrinking */
+        text-align: left;
+        flex-grow: 1; /* Takes up available space on the left */
     }
-
     .summary-total-section p {
-        /* Hide the "Total Purchase" text on mobile to save space */
-        display: none;
+        display: none; /* Hide "Total Purchase" text to save space */
     }
-
     .summary-total-section .total-amount {
-        font-size: 1.1rem; /* Make the total amount slightly smaller */
+        font-size: 1.2rem;
+        font-weight: 600;
     }
 
     .summary-actions {
-        margin-left: 0.5rem;
+        margin-left: auto; /* Pushes the buttons to the far right */
+        flex-shrink: 0; /* Prevents buttons from being squished */
+    }
+    .summary-actions .expand-btn {
+        display: flex; /* Ensures the expand button is visible */
     }
 
-    /* Hide the expand arrow button on mobile to save space */
-    .summary-actions .expand-btn {
-        display: none;
+    .modal-content.modal-lg {
+        margin: 5% auto;
+        width: 95%;
+        padding: 15px;
+    }
+
+    /***************************************/
+    /* Styles for History Bill Cards */
+    /***************************************/
+    .bill-card-main {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: nowrap;
+        padding: 0.75rem 1rem;
+    }
+    .bill-info.bill-id, .bill-info.bill-total, .bill-info.bill-customer {
+        flex-basis: auto;
+        margin-top: 0;
+    }
+    .bill-info.bill-customer {
+        flex-grow: 1;
+        padding: 0 1rem;
+        text-align: left;
+    }
+    .bill-info.bill-id, .bill-info.bill-total {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+    .bill-info.bill-total {
+        align-items: flex-end;
+    }
+    .bill-info h4 {
+        font-size: 1.1rem;
+        line-height: 1.2;
+    }
+    .bill-info p {
+        font-size: 0.8rem;
+        line-height: 1.2;
+        color: #555;
+    }
+    .bill-status-badge, .payment-status {
+        font-size: 0.65rem;
+        padding: 2px 6px;
+    }
+    .bill-card-actions {
+        padding: 0.5rem 1rem;
+        gap: 0.5rem;
+        border-top: 1px solid #f0f0f0;
+    }
+    .payment-toggle-container span {
+        font-size: 0.8rem;
+    }
+    .action-btn {
+        width: 34px;
+        height: 34px;
+    }
+    .action-btn svg {
+        width: 16px;
+        height: 16px;
     }
 }
-
         
     </style>
 </head>
