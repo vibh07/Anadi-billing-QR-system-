@@ -163,7 +163,7 @@
     cursor: pointer;
     flex-wrap: nowrap;
         }
-        .bill-info { flex: 1 1 200px; padding: 0.1rem; }
+        .bill-info { flex: 1 1 200px; padding: 0.5rem; }
         .bill-info.bill-id { flex-grow: 0.5; }
         .bill-info.bill-customer { flex-grow: 1.5; }
         .bill-info.bill-total { flex-grow: 0.5; text-align: right; }
@@ -401,33 +401,79 @@
 .summary-bill-item .date { color: #7f8c8d; font-size: 0.9em; }
 .summary-bill-item .amount { font-weight: 600; color: var(--primary-color); }
 /* Add this media query at the end of your <style> block */
-@media (max-width: 576px) {
-    .summary-card-header {
-        flex-wrap: wrap; /* Allows items to wrap to the next line */
-        padding: 0.75rem 1rem;
-        row-gap: 0.75rem; /* Adds space when items wrap */
-    }
-
-    .summary-info {
-        /* Ensures the info section is properly sized next to the icon */
-        flex-basis: calc(100% - 48px - 1rem); 
-        min-width: 150px;
+/* REPLACE your old media query block with this new one for the new mobile layout */
+@media (max-width: 767px) {
+    .container {
+        padding: 1rem;
     }
     
-    .summary-total-section {
-        flex-grow: 1; /* Allows total to take up available space on the second line */
-        text-align: left; /* Aligns the total to the left */
+    .bill-card-main {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: nowrap; /* Ensures content stays on one line */
+        padding: 0.75rem 1rem;
     }
 
-    .summary-actions {
-        margin-left: 0; /* Removes the fixed margin to allow for better alignment */
+    /* Reset previous mobile layout styles */
+    .bill-info.bill-id,
+    .bill-info.bill-total,
+    .bill-info.bill-customer {
+        flex-basis: auto;
+        margin-top: 0;
     }
 
-    .modal-content.modal-lg {
-        /* Adjusts the modal itself for a better fit on mobile */
-        margin: 5% auto;
-        width: 95%;
-        padding: 15px;
+    .bill-info.bill-customer {
+        flex-grow: 1; /* Pushes ID and Total to the sides */
+        padding: 0 1rem; /* Adds horizontal spacing */
+        text-align: left;
+    }
+    
+    /* Stack the ID/Total with their respective badges */
+    .bill-info.bill-id, .bill-info.bill-total {
+        display: flex;
+        flex-direction: column;
+        gap: 2px; /* Small gap between text and badge */
+    }
+
+    .bill-info.bill-total {
+        align-items: flex-end; /* Aligns total content to the right */
+    }
+
+    /* Font size adjustments for compactness */
+    .bill-info h4 {
+        font-size: 1.1rem;
+        line-height: 1.2;
+    }
+    .bill-info p {
+        font-size: 0.8rem;
+        line-height: 1.2;
+        color: #555;
+    }
+    
+    .bill-status-badge, .payment-status {
+        font-size: 0.65rem;
+        padding: 2px 6px;
+    }
+
+    /* Style the action bar */
+    .bill-card-actions {
+        padding: 0.5rem 1rem;
+        gap: 0.5rem;
+        border-top: 1px solid #f0f0f0; /* Adds the separator line */
+    }
+
+    .payment-toggle-container span {
+        font-size: 0.8rem;
+    }
+
+    .action-btn {
+        width: 34px;
+        height: 34px;
+    }
+    .action-btn svg {
+        width: 16px;
+        height: 16px;
     }
 }
     </style>
@@ -852,22 +898,30 @@ function toggleSummaryDetails(headerElement) {
         document.getElementById('print-qr-img').src = qrDataUrl;
     }
 
-    function renderHistory() {
-        const searchTerm = document.getElementById('historySearchInput').value.toLowerCase();
-        const filteredBills = bills.filter(bill =>
-            bill.customer.name.toLowerCase().includes(searchTerm) ||
-            bill.customer.phone.toString().includes(searchTerm) ||
-            bill.id.toString().includes(searchTerm)
-        );
-        const container = document.getElementById('bill-history-container');
-        container.innerHTML = filteredBills.length === 0 ? '<p style="text-align:center;">No bills found.</p>' : '';
-        filteredBills.forEach(bill => {
-            const card = document.createElement('div');
-            card.className = `bill-card ${bill.status}`;
-            card.innerHTML = `<div class="bill-card-main" onclick="toggleDetails(this, ${bill.id})"><div class="bill-info bill-id"><h4>#${bill.id}</h4><span class="bill-status-badge ${bill.status}">${bill.status}</span></div><div class="bill-info bill-customer"><p><strong>${bill.customer.name}</strong></p><p>${bill.customer.phone}</p></div><div class="bill-info bill-total"><h4>₹${bill.total.toFixed(2)}</h4><span class="payment-status ${bill.paymentStatus}">${bill.paymentStatus.toUpperCase()}</span></div></div><div class="bill-card-actions"><div class="payment-toggle-container" title="Toggle Payment Status" onclick="event.stopPropagation()"><span>Payment:</span><input type="checkbox" id="pay-toggle-${bill.id}" class="payment-toggle" onchange="togglePaymentStatus(${bill.id}, this.checked)" ${bill.paymentStatus === 'paid' ? 'checked' : ''}><label for="pay-toggle-${bill.id}" class="payment-toggle-label"></label></div><button class="action-btn whatsapp-btn" title="Send on WhatsApp" onclick="sendWhatsApp(${bill.id})">${whatsappIcon}</button><button class="action-btn delete-btn" title="Delete Bill" onclick="deleteBill(${bill.id})">🗑️</button><button class="action-btn expand-btn" title="View Details" onclick="toggleDetails(this.parentElement.previousElementSibling, ${bill.id})">▼</button></div><div class="bill-details"><div class="bill-details-content"></div></div>`;
-            container.appendChild(card);
-        });
-    }
+    // REPLACE your existing renderHistory function with this one
+function renderHistory() {
+    const searchTerm = document.getElementById('historySearchInput').value.toLowerCase();
+    
+    const filteredBills = bills.filter(bill =>
+        bill.customer.name.toLowerCase().includes(searchTerm) ||
+        bill.customer.phone.toString().includes(searchTerm) ||
+        bill.id.toString().includes(searchTerm)
+    );
+
+    // **IMPORTANT FIX**: This line sorts all bills by date, ensuring the newest is always first.
+    filteredBills.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    const container = document.getElementById('bill-history-container');
+    container.innerHTML = filteredBills.length === 0 ? '<p style="text-align:center;">No bills found.</p>' : '';
+    
+    filteredBills.forEach(bill => {
+        const card = document.createElement('div');
+        card.className = `bill-card ${bill.status}`;
+        // The HTML structure remains the same as it supports the new CSS layout
+        card.innerHTML = `<div class="bill-card-main" onclick="toggleDetails(this, ${bill.id})"><div class="bill-info bill-id"><h4>#${bill.id}</h4><span class="bill-status-badge ${bill.status}">${bill.status}</span></div><div class="bill-info bill-customer"><p><strong>${bill.customer.name}</strong></p><p>${bill.customer.phone}</p></div><div class="bill-info bill-total"><h4>₹${bill.total.toFixed(2)}</h4><span class="payment-status ${bill.paymentStatus}">${bill.paymentStatus.toUpperCase()}</span></div></div><div class="bill-card-actions"><div class="payment-toggle-container" title="Toggle Payment Status" onclick="event.stopPropagation()"><span>Payment:</span><input type="checkbox" id="pay-toggle-${bill.id}" class="payment-toggle" onchange="togglePaymentStatus(${bill.id}, this.checked)" ${bill.paymentStatus === 'paid' ? 'checked' : ''}><label for="pay-toggle-${bill.id}" class="payment-toggle-label"></label></div><button class="action-btn whatsapp-btn" title="Send on WhatsApp" onclick="sendWhatsApp(${bill.id})">${whatsappIcon}</button><button class="action-btn delete-btn" title="Delete Bill" onclick="deleteBill(${bill.id})">🗑️</button><button class="action-btn expand-btn" title="View Details" onclick="toggleDetails(this.parentElement.previousElementSibling, ${bill.id})">▼</button></div><div class="bill-details"><div class="bill-details-content"></div></div>`;
+        container.appendChild(card);
+    });
+}
     
     function toggleDetails(headerElement, billId) {
         const card = headerElement.closest('.bill-card');
